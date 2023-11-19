@@ -99,7 +99,7 @@ AppBar buildAppBar(BuildContext context) {
       onPressed: () {},
     ),
     centerTitle: true,
-    title: Image.asset("assets/images/logo.png"),
+    title: Image.asset("assets/images/App_Title.png"),
     actions: <Widget>[
       IconButton(
         icon: SvgPicture.asset("assets/icons/search.svg"),

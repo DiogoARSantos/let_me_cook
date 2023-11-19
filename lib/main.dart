@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:let_me_cook/app.dart';
+import 'package:let_me_cook/screens/login/login_screen.dart';
 import 'package:provider/provider.dart';
 
 
@@ -20,7 +21,11 @@ class MyApp extends StatelessWidget {
           appBarTheme: AppBarTheme(color: Colors.white, elevation: 3),
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: App(),
+        initialRoute: '/login', // Set the initial route
+        routes: {
+          '/login': (context) => LoginScreen(),
+          '/main': (context) => App(),
+        },
       ),
     );
   }
@@ -28,4 +33,6 @@ class MyApp extends StatelessWidget {
 
 class MyAppState extends ChangeNotifier {
 
+  var username = "";
+  var password = "";
 }
