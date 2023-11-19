@@ -52,20 +52,20 @@ class _AppState extends State<App> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        unselectedIconTheme: IconThemeData(color: Colors.black54, size: 40),
+        unselectedIconTheme: IconThemeData(color: Color(0xFFBF7979), size: 40),
         unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
-        unselectedItemColor: Colors.black87,
-        selectedIconTheme: IconThemeData(color: Colors.black, size: 50),
+        unselectedItemColor: Color(0xFFBF7979),
+        selectedIconTheme: IconThemeData(color: Color(0xFF522828), size: 50),
         selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-        selectedItemColor: Colors.black,
+        selectedItemColor: Color(0xFF522828),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'Início',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_basket),
-            label: 'Shopping List',
+            label: 'Lista de Compras',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),
@@ -73,11 +73,11 @@ class _AppState extends State<App> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.kitchen),
-            label: 'Pantry',
+            label: 'Despensa',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Profile',
+            label: 'Perfil',
           ),
         ],
       ),
