@@ -139,34 +139,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text('Seu Título'),
-        actions: [
-          // Adiciona um espaçamento de 8 pixels
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: IconButton(
-              onPressed: () {
-                // Ação para o ícone de notificação
-              },
-              icon: Icon(Icons.notifications, size: 35.0),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: IconButton(
-              onPressed: () {
-                // Ação para o ícone de configurações
-              },
-              icon: Icon(Icons.settings, size: 35.0),
-            ),
-          ),
-        ],
-      ),
       body: Column(
         children: [
-          SizedBox(height: 10), // Adiciona um espaçamento de 20 pixels
+          buildCustomAppBar(),
+          SizedBox(height: 10),
           Text(
             'Receitas',
             style: TextStyle(
@@ -175,8 +151,37 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           SizedBox(height: 8),
-          buildSearchTextField(context), // Adiciona um espaçamento de 8 pixels
+          buildSearchTextField(context),
           buildReceitasList(),
+        ],
+      ),
+    );
+  }
+
+  Widget buildCustomAppBar() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      color: Colors.white,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              IconButton(
+                onPressed: () {
+                  // Ação para o ícone de notificação
+                },
+                icon: Icon(Icons.notifications, size: 35.0),
+              ),
+              SizedBox(width: 8),
+            ],
+          ),
+          IconButton(
+            onPressed: () {
+              // Ação para o ícone de configurações
+            },
+            icon: Icon(Icons.settings, size: 35.0),
+          ),
         ],
       ),
     );
