@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:let_me_cook/screens/addRecipe/add_recipe_screen.dart';
 import 'package:let_me_cook/screens/home/home_screen.dart';
 import 'package:let_me_cook/screens/pantry/pantry_screen.dart';
@@ -24,7 +23,6 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-
     Widget page;
     switch (_selectedIndex) {
       case 0:
@@ -88,24 +86,15 @@ class _AppState extends State<App> {
 }
 
 AppBar buildAppBar(BuildContext context) {
-  var deviceData = MediaQuery.of(context);
-  var defaultSize = deviceData.orientation == Orientation.landscape
-      ? deviceData.size.height * 0.024
-      : deviceData.size.width * 0.024;
 
   return AppBar(
-    leading: IconButton(
-      icon: SvgPicture.asset("assets/icons/menu.svg"),
-      onPressed: () {},
-    ),
     centerTitle: true,
-    title: Image.asset("assets/images/App_Title.png"),
-    actions: <Widget>[
-      IconButton(
-        icon: SvgPicture.asset("assets/icons/search.svg"),
-        onPressed: () {},
+    title: Container(
+      child: Image.asset(
+        "assets/images/App_Title.png",
+        width: 200,
+        fit: BoxFit.contain,
       ),
-      SizedBox(width: defaultSize * 0.5)
-    ],
+    ),
   );
 }

@@ -32,7 +32,11 @@ class MyApp extends StatelessWidget {
 }
 
 class MyAppState extends ChangeNotifier {
-
-  var username = "";
+  var name = "";
   var password = "";
+
+  void changeName(String newName) {
+      name = newName;
+      notifyListeners();
+  }
 }
