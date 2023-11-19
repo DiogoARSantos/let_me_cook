@@ -150,6 +150,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    var name = appState.name;
     return ChangeNotifierProvider(
       create: (context) => MyAppState2(),
       child: Consumer<MyAppState2>(
@@ -165,7 +167,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  'Wilker Martins',
+                  '$name',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 30),
@@ -186,7 +188,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     style: ElevatedButton.styleFrom(
                       primary: appState2._displayFavorites
                           ? Colors.transparent
-                          : Colors.green,
+                          : const Color.fromARGB(255, 175, 76, 76),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
@@ -202,7 +204,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     },
                     style: ElevatedButton.styleFrom(
                       primary: appState2._displayFavorites
-                          ? Colors.green
+                          ? const Color.fromARGB(255, 175, 76, 76)
                           : Colors.transparent,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
