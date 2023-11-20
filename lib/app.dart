@@ -80,7 +80,7 @@ class _AppState extends State<App> {
         page = AddRecipeScreen(addRecipe: addRecipe, backToHomeScreen: backToHomeScreen);
         break;
       case 3:
-        page = PantryScreen();
+        page = PantryScreen(pantryList: pantryList);
         break;
       case 4:
         page = ProfileScreen();
