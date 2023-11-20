@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../allIngredients.dart';
+import 'IngredientSearchScreen.dart';
 
 class ShoppingListScreen extends StatefulWidget {
   final List<String> shoppingList;
@@ -20,30 +21,41 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
   List<String> shoppingList = [];
   List<String> filteredIngredients = [];
   List<bool> boughtStatus = [];
+  List<String> displayedShoppingList = [];
 
   @override
   void initState() {
     super.initState();
-    _searchController.addListener(_onSearchChanged);
     shoppingList = widget.shoppingList;
     boughtStatus = widget.boughtStatus;
+    displayedShoppingList = shoppingList;
   }
 
-  @override
-  void dispose() {
-    _searchController.removeListener(_onSearchChanged);
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  void _onSearchChanged() {
+  void _onSearchChanged(String query) {
     setState(() {
-      filteredIngredients = allIngredients
-          .where((ingredient) => ingredient
-          .toLowerCase()
-          .contains(_searchController.text.toLowerCase()))
+      displayedShoppingList = widget.shoppingList
+          .where((ingredient) =>
+          ingredient.toLowerCase().contains(query.toLowerCase()))
           .toList();
     });
+  }
+
+  void _navigateToIngredientSearch() async {
+    final updatedShoppingList = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => IngredientSearchScreen(
+          shoppingList: shoppingList, boughtStatus: boughtStatus,
+        ),
+      ),
+    );
+
+    if (updatedShoppingList != null) {
+      setState(() {
+        shoppingList = updatedShoppingList;
+        _onSearchChanged(_searchController.text);
+      });
+    }
   }
 
   @override
@@ -68,7 +80,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                 child: TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
-                    hintText: "Adicionar ingredientes...",
+                    hintText: "Pesquisar na lista de compras...",
                     prefixIcon: Icon(
                       Icons.search,
                       color: Color(0xFFBF7979),
@@ -82,18 +94,17 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                     contentPadding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
                   ),
                   onChanged: (value) {
-                    _onSearchChanged();
+                    _onSearchChanged(value);
                   },
                 ),
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: shoppingList.length,
+                  itemCount: displayedShoppingList.length,
                   itemBuilder: (context, index) {
                     return ListTile(
                       title: Text(
-                        shoppingList[index],
-                        // Apply strike-through if the ingredient is bought
+                        displayedShoppingList[index],
                         style: TextStyle(
                           decoration: boughtStatus.isNotEmpty && boughtStatus[index]
                               ? TextDecoration.lineThrough
@@ -112,12 +123,12 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                         icon: Icon(Icons.delete),
                         onPressed: () {
                           setState(() {
-                            shoppingList.removeAt(index);
                             boughtStatus.removeAt(index);
+                            shoppingList.removeAt(index);
+                            displayedShoppingList = shoppingList;
                           });
                         },
                       ),
-                      // Add checkbox or other UI for marking as bought
                     );
                   },
                 ),
@@ -147,8 +158,8 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                         onTap: () {
                           setState(() {
                             if (!shoppingList.contains(ingredient)) {
-                              shoppingList.add(ingredient);
                               boughtStatus.add(false);
+                              shoppingList.add(ingredient);
                             }
                             _searchController.clear();
                             filteredIngredients.clear();
@@ -161,6 +172,14 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
               ),
             ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFFBF7979),
+        tooltip: "Adicionar novo ingrediente",
+        onPressed: () {
+          _navigateToIngredientSearch();
+        },
+        child: Icon(Icons.add),
       ),
     );
   }
