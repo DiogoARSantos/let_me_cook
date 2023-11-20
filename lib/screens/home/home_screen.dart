@@ -123,7 +123,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: Column(
         children: [
-          SizedBox(height: 10), // Adiciona um espaçamento de 20 pixels
+          buildCustomAppBar(),
+          SizedBox(height: 10),
           Text(
             'Receitas',
             style: TextStyle(
@@ -132,8 +133,37 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           SizedBox(height: 8),
-          buildSearchTextField(context), // Adiciona um espaçamento de 8 pixels
+          buildSearchTextField(context),
           buildReceitasList(),
+        ],
+      ),
+    );
+  }
+
+  Widget buildCustomAppBar() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      color: Colors.transparent,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              IconButton(
+                onPressed: () {
+                  // Ação para o ícone de notificação
+                },
+                icon: Icon(Icons.notifications, size: 35.0),
+              ),
+              SizedBox(width: 8),
+            ],
+          ),
+          IconButton(
+            onPressed: () {
+              // Ação para o ícone de configurações
+            },
+            icon: Icon(Icons.settings, size: 35.0),
+          ),
         ],
       ),
     );
