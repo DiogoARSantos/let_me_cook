@@ -1,138 +1,24 @@
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../main.dart';
+import '../../models/Recipe.dart';
+import 'package:let_me_cook/screens/home/widgets/RecipeCard.dart';
 
 class ProfileScreen extends StatefulWidget {
+  List<Recipe> recipeList = [];
+  List<Recipe> favoriteRecipeList = [];
+  ProfileScreen({required this.recipeList, required this.favoriteRecipeList});
   @override
   State<ProfileScreen> createState() => _ProfileScreenState(title: 'Profile');
 }
 
-class DataSearch extends SearchDelegate<String> {
-  final List<Receita> allData; // Substitua com seus próprios dados
-
-  DataSearch({required this.allData});
-
-  List<Receita> get _currentRecipes {
-    return query.isEmpty
-        ? allData
-        : allData
-            .where((receita) =>
-                receita.nome.toLowerCase().contains(query.toLowerCase()))
-            .toList();
-  }
-
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-        icon: Icon(Icons.clear),
-        onPressed: () {
-          query = '';
-        },
-      ),
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-      icon: Icon(Icons.arrow_back),
-      onPressed: () {
-        close(context, "");
-      },
-    );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    return ListView.builder(
-      itemCount: _currentRecipes.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(_currentRecipes[index].nome),
-          onTap: () {
-            close(context, _currentRecipes[index].nome);
-          },
-        );
-      },
-    );
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    return ListView.builder(
-      itemCount: _currentRecipes.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(_currentRecipes[index].nome),
-          onTap: () {
-            query = _currentRecipes[index].nome;
-            showResults(context);
-          },
-        );
-      },
-    );
-  }
-}
-
-class Receita {
-  final String nome;
-  final String foto;
-
-  Receita({required this.nome, required this.foto});
-}
-
-class ReceitaCard extends StatelessWidget {
-  final Receita receita;
-
-  ReceitaCard({required this.receita});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            height: 200.0,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(receita.foto),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              receita.nome,
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class MyAppState2 extends ChangeNotifier {
-  final List<Receita> favorites = [
-    Receita(nome: 'Favorite 1', foto: 'caminho_foto_1'),
-    Receita(nome: 'Favorite 2', foto: 'caminho_foto_2'),
-    // Adicione mais receitas favoritas conforme necessário
-  ];
-  final List<Receita> recipes = [
-    Receita(nome: 'Recipe 1', foto: 'caminho_foto_3'),
-    Receita(nome: 'Recipe 2', foto: 'caminho_foto_4'),
-    // Adicione mais receitas conforme necessário
-  ];
-
-  List<Receita> get displayedRecipes {
-    return _displayFavorites ? favorites : recipes;
+  List<Recipe> recipeList = [];
+  List<Recipe> favoriteRecipeList = [];
+  MyAppState2({required this.recipeList, required this.favoriteRecipeList});
+  List<Recipe> get displayedRecipes {
+    return _displayFavorites ? favoriteRecipeList : recipeList;
   }
 
   bool _displayFavorites = false;
@@ -147,13 +33,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final String title;
 
   _ProfileScreenState({Key? key, required this.title});
+  TextEditingController _searchController = TextEditingController();
+
+  List<Recipe> filteredRecipes = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(_onSearchChanged);
+    filteredRecipes = List.from(widget.recipeList);
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged() {
+    final List<Recipe> sourceList =
+        context.read<MyAppState2>().displayedRecipes;
+    setState(() {
+      filteredRecipes = sourceList
+          .where((recipe) => recipe.title
+              .toLowerCase()
+              .contains(_searchController.text.toLowerCase()))
+          .toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
     var name = appState.name;
     return ChangeNotifierProvider(
-      create: (context) => MyAppState2(),
+      create: (context) => MyAppState2(
+          recipeList: widget.recipeList,
+          favoriteRecipeList: widget.favoriteRecipeList),
       child: Consumer<MyAppState2>(
         builder: (context, appState2, child) {
           Widget buildHeader() {
@@ -222,10 +139,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 onChanged: (value) {
-                  showSearch(
-                    context: context,
-                    delegate: DataSearch(allData: appState2.displayedRecipes),
-                  );
+                  _onSearchChanged();
                 },
                 decoration: InputDecoration(
                   hintText: 'Pesquisar...',
@@ -242,11 +156,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Widget buildReceitasList() {
             return Expanded(
               child: ListView.builder(
-                itemCount: appState2.displayedRecipes.length,
+                itemCount: filteredRecipes.length,
                 itemBuilder: (context, index) {
-                  return ReceitaCard(
-                    receita: appState2.displayedRecipes[index],
-                  );
+                  return RecipeCard(recipe: filteredRecipes[index]);
                 },
               ),
             );

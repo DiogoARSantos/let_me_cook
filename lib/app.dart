@@ -54,13 +54,10 @@ class _AppState extends State<App> {
   }
 
   void addRecipe(Recipe recipe) {
-      setState(() {
-        recipeList.add(recipe);
-      });
+    setState(() {
+      recipeList.add(recipe);
+    });
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -77,13 +74,17 @@ class _AppState extends State<App> {
         page = ShoppingListScreen(shoppingList: shoppingList);
         break;
       case 2:
-        page = AddRecipeScreen(addRecipe: addRecipe, backToHomeScreen: backToHomeScreen);
+        page = AddRecipeScreen(
+            addRecipe: addRecipe, backToHomeScreen: backToHomeScreen);
         break;
       case 3:
         page = PantryScreen();
         break;
       case 4:
-        page = ProfileScreen();
+        page = ProfileScreen(
+          recipeList: recipeList,
+          favoriteRecipeList: favoriteRecipeList,
+        );
         break;
       default:
         throw UnimplementedError('no widget for $_selectedIndex');
@@ -131,7 +132,6 @@ class _AppState extends State<App> {
 }
 
 AppBar buildAppBar(BuildContext context) {
-
   return AppBar(
     centerTitle: true,
     title: Image.asset(

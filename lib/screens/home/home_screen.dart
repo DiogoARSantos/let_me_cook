@@ -12,75 +12,35 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class DataSearch extends SearchDelegate<String> {
-  final List<Recipe> allData; // Substitua com seus próprios dados
-
-  DataSearch({required this.allData});
-
-  List<Recipe> get _currentRecipes {
-    return query.isEmpty
-        ? allData
-        : allData
-        .where((recipe) =>
-        recipe.title.toLowerCase().contains(query.toLowerCase()))
-        .toList();
-  }
-
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-        icon: Icon(Icons.clear),
-        onPressed: () {
-          query = '';
-        },
-      ),
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-      icon: Icon(Icons.arrow_back),
-      onPressed: () {
-        close(context, "");
-      },
-    );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    return ListView.builder(
-      itemCount: _currentRecipes.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(_currentRecipes[index].title),
-          onTap: () {
-            close(context, _currentRecipes[index].title);
-          },
-        );
-      },
-    );
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    return ListView.builder(
-      itemCount: _currentRecipes.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(_currentRecipes[index].title),
-          onTap: () {
-            query = _currentRecipes[index].title;
-            showResults(context);
-          },
-        );
-      },
-    );
-  }
-}
-
 class _HomeScreenState extends State<HomeScreen> {
+  TextEditingController _searchController = TextEditingController();
+
+  List<Recipe> filteredRecipes = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(_onSearchChanged);
+    filteredRecipes = List.from(widget.recipeList);
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged() {
+    setState(() {
+      filteredRecipes = widget.recipeList
+          .where((recipe) => recipe.title
+              .toLowerCase()
+              .contains(_searchController.text.toLowerCase()))
+          .toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,10 +67,9 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.all(8.0),
       child: TextField(
         onChanged: (value) {
-          showSearch(
-              context: context,
-              delegate: DataSearch(allData: widget.recipeList));
+          _onSearchChanged();
         },
+        controller: _searchController,
         decoration: InputDecoration(
           hintText: 'Pesquisar receita...',
           prefixIcon: Icon(
@@ -119,13 +78,11 @@ class _HomeScreenState extends State<HomeScreen> {
             size: 40,
           ),
           border: OutlineInputBorder(
-            borderSide: BorderSide(
-                color: Color(0xFFBF7979)
-            ),
+            borderSide: BorderSide(color: Color(0xFFBF7979)),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                color: Color(0xFFBF7979)), // Set transparent color
+            borderSide:
+                BorderSide(color: Color(0xFFBF7979)), // Set transparent color
           ),
           contentPadding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
         ),
@@ -136,9 +93,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget buildRecipesList() {
     return Expanded(
       child: ListView.builder(
-        itemCount: widget.recipeList.length,
+        itemCount: filteredRecipes.length,
         itemBuilder: (context, index) {
-          return RecipeCard(recipe: widget.recipeList[index]);
+          return RecipeCard(recipe: filteredRecipes[index]);
         },
       ),
     );
