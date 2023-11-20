@@ -7,12 +7,14 @@ import 'dart:io';
 //import 'package:let_me_cook/screens/home/components/body.dart';
 
 class AddRecipeScreen extends StatefulWidget {
-  final Function(Recipe) addRecipe;
 
-  AddRecipeScreen({required this.addRecipe});
+  final Function(Recipe) addRecipe;
+  final Function() backToHomeScreen;
+
+  AddRecipeScreen({required this.addRecipe, required this.backToHomeScreen});
 
   @override
-  State<AddRecipeScreen> createState() => AddRecipeScreenState();
+  AddRecipeScreenState createState() => AddRecipeScreenState();
 }
 
 class AddRecipeScreenState extends State<AddRecipeScreen> {
@@ -437,13 +439,10 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
       for(int i=0; i < _stepsItems.length; i++) {
         _steps.add(_stepsItems[i].text);
       }
-      Recipe recipe = Recipe(picture: _selectedImage,
-        title: _title,
-        portions: _portions,
-        duration: _duration,
-        ingredients: _ingredients,
-        steps: _steps);
+      Recipe recipe = Recipe(picture: _selectedImage, title: _title, portions: _portions, 
+      duration: _duration, ingredients: _ingredients, steps: _steps);
       widget.addRecipe(recipe);
+      widget.backToHomeScreen();
     }
     else {
       print("NULL");

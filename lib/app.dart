@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:let_me_cook/screens/addRecipe/add_recipe_screen.dart';
-import 'package:let_me_cook/screens/seeRecipe/see_recipe_screen.dart';
 import 'package:let_me_cook/screens/home/home_screen.dart';
 import 'package:let_me_cook/screens/pantry/pantry_screen.dart';
 import 'package:let_me_cook/screens/profile/profile_screen.dart';
@@ -30,6 +29,12 @@ class _AppState extends State<App> {
 
   bool isInPantry(String ingredient) {
     return pantryList.contains(ingredient);
+  }
+
+  void backToHomeScreen() {
+    setState(() {
+      _selectedIndex = 0;
+    });
   }
 
   void addToShoppingList(String ingredient) {
@@ -72,7 +77,7 @@ class _AppState extends State<App> {
         page = ShoppingListScreen(shoppingList: shoppingList);
         break;
       case 2:
-        page = AddRecipeScreen(addRecipe: addRecipe);
+        page = AddRecipeScreen(addRecipe: addRecipe, backToHomeScreen: backToHomeScreen);
         break;
       case 3:
         page = PantryScreen();
