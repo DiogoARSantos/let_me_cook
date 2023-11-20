@@ -5,6 +5,8 @@ import 'package:let_me_cook/screens/pantry/pantry_screen.dart';
 import 'package:let_me_cook/screens/profile/profile_screen.dart';
 import 'package:let_me_cook/screens/shoppingList/shopping_list_screen.dart';
 
+import 'models/Recipe.dart';
+
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
 
@@ -14,12 +16,31 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   int _selectedIndex = 0;
+  List<String> shoppingList = [];
+  List<Recipe> recipeList = [];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
+
+  void addToShoppingList(String ingredient) {
+    if (!shoppingList.contains(ingredient)) {
+      setState(() {
+        shoppingList.add(ingredient);
+      });
+    }
+  }
+
+  void addRecipe(Recipe recipe) {
+      setState(() {
+        recipeList.add(recipe);
+      });
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +50,10 @@ class _AppState extends State<App> {
         page = HomeScreen();
         break;
       case 1:
-        page = ShoppingListScreen();
+        page = ShoppingListScreen(shoppingList: shoppingList);
         break;
       case 2:
-        page = AddRecipeScreen();
+        page = AddRecipeScreen(addRecipe: addRecipe);
         break;
       case 3:
         page = PantryScreen();
@@ -89,12 +110,10 @@ AppBar buildAppBar(BuildContext context) {
 
   return AppBar(
     centerTitle: true,
-    title: Container(
-      child: Image.asset(
-        "assets/images/App_Title.png",
-        width: 200,
-        fit: BoxFit.contain,
-      ),
+    title: Image.asset(
+      "assets/images/App_Title.png",
+      width: 200,
+      fit: BoxFit.contain,
     ),
   );
 }

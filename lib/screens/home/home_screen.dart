@@ -1,24 +1,26 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../../main.dart';
+
+import 'package:flutter/material.dart';
+import 'package:let_me_cook/exampleRecipes.dart';
+
+import '../../models/Recipe.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
-  State<HomeScreen> createState() => _HomeScreenState(title: 'Home');
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class DataSearch extends SearchDelegate<String> {
-  final List<Receita> allData; // Substitua com seus próprios dados
+  final List<Recipe> allData; // Substitua com seus próprios dados
 
   DataSearch({required this.allData});
 
-  List<Receita> get _currentRecipes {
+  List<Recipe> get _currentRecipes {
     return query.isEmpty
         ? allData
         : allData
-            .where((receita) =>
-                receita.nome.toLowerCase().contains(query.toLowerCase()))
+            .where((recipe) =>
+                recipe.title.toLowerCase().contains(query.toLowerCase()))
             .toList();
   }
 
@@ -50,9 +52,9 @@ class DataSearch extends SearchDelegate<String> {
       itemCount: _currentRecipes.length,
       itemBuilder: (context, index) {
         return ListTile(
-          title: Text(_currentRecipes[index].nome),
+          title: Text(_currentRecipes[index].title),
           onTap: () {
-            close(context, _currentRecipes[index].nome);
+            close(context, _currentRecipes[index].title);
           },
         );
       },
@@ -65,9 +67,9 @@ class DataSearch extends SearchDelegate<String> {
       itemCount: _currentRecipes.length,
       itemBuilder: (context, index) {
         return ListTile(
-          title: Text(_currentRecipes[index].nome),
+          title: Text(_currentRecipes[index].title),
           onTap: () {
-            query = _currentRecipes[index].nome;
+            query = _currentRecipes[index].title;
             showResults(context);
           },
         );
@@ -76,17 +78,10 @@ class DataSearch extends SearchDelegate<String> {
   }
 }
 
-class Receita {
-  final String nome;
-  final String foto;
+class RecipeCard extends StatelessWidget {
+  final Recipe recipe;
 
-  Receita({required this.nome, required this.foto});
-}
-
-class ReceitaCard extends StatelessWidget {
-  final Receita receita;
-
-  ReceitaCard({required this.receita});
+  RecipeCard({required this.recipe});
 
   @override
   Widget build(BuildContext context) {
@@ -98,16 +93,18 @@ class ReceitaCard extends StatelessWidget {
           Container(
             height: 200.0,
             decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(receita.foto),
+              image: recipe.picture != null
+                  ? DecorationImage(
+                image: FileImage(recipe.picture!),
                 fit: BoxFit.cover,
-              ),
+              )
+                  : null,
             ),
           ),
           Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
-              receita.nome,
+              recipe.title,
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
@@ -121,49 +118,9 @@ class ReceitaCard extends StatelessWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final String title;
-
-  _HomeScreenState({Key? key, required this.title});
-
-  // Lista fictícia de receitas
-  final List<Receita> receitas = [
-    Receita(nome: 'Receita 1', foto: 'caminho_foto_1'),
-    Receita(nome: 'Receita 2', foto: 'caminho_foto_2'),
-    Receita(nome: 'Receita 3', foto: 'caminho_foto_3'),
-    Receita(nome: 'Receita 4', foto: 'caminho_foto_4'),
-    Receita(nome: 'Receita 5', foto: 'caminho_foto_5'),
-    Receita(nome: 'Receita 6', foto: 'caminho_foto_6'),
-    // Adicione mais receitas conforme necessário
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text('Seu Título'),
-        actions: [
-          // Adiciona um espaçamento de 8 pixels
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: IconButton(
-              onPressed: () {
-                // Ação para o ícone de notificação
-              },
-              icon: Icon(Icons.notifications, size: 35.0),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: IconButton(
-              onPressed: () {
-                // Ação para o ícone de configurações
-              },
-              icon: Icon(Icons.settings, size: 35.0),
-            ),
-          ),
-        ],
-      ),
       body: Column(
         children: [
           SizedBox(height: 10), // Adiciona um espaçamento de 20 pixels
@@ -187,7 +144,8 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.all(8.0),
       child: TextField(
         onChanged: (value) {
-          showSearch(context: context, delegate: DataSearch(allData: receitas));
+          showSearch(
+              context: context, delegate: DataSearch(allData: exampleRecipes));
         },
         decoration: InputDecoration(
           hintText: 'Pesquisar...',
@@ -203,9 +161,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget buildReceitasList() {
     return Expanded(
       child: ListView.builder(
-        itemCount: receitas.length,
+        itemCount: exampleRecipes.length,
         itemBuilder: (context, index) {
-          return ReceitaCard(receita: receitas[index]);
+          return RecipeCard(recipe: exampleRecipes[index]);
         },
       ),
     );

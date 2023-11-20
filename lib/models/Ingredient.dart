@@ -4,6 +4,4 @@ class Ingredient {
   String units;
 
   Ingredient({required this.name, required this.quantity, required this.units});
-
-
 }

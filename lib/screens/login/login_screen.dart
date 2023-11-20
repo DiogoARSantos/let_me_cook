@@ -90,7 +90,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 30,
-                        fontFamily: 'Poppins',
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -105,7 +104,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ? Color(0xFFA30000)
                             : Colors.white,
                         fontSize: 13,
-                        fontFamily: 'Poppins',
                         fontWeight: FontWeight.w400,
                       ),
                       decoration: InputDecoration(
@@ -115,7 +113,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               ? Color(0xFFA30000)
                               : Colors.white, // Default label color,
                           fontSize: 15,
-                          fontFamily: 'Poppins',
                           fontWeight: FontWeight.w600,
                         ),
                         enabledBorder: OutlineInputBorder(
@@ -149,7 +146,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         errorStyle: TextStyle(
                           color: Color(0xFFA30000),
                           fontSize: 13,
-                          fontFamily: 'Poppins',
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -183,7 +179,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ? Color(0xFFA30000)
                             : Colors.white,
                         fontSize: 13,
-                        fontFamily: 'Poppins',
                         fontWeight: FontWeight.w400,
                       ),
                       obscureText: true,
@@ -194,7 +189,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               ? Color(0xFFA30000)
                               : Colors.white,
                           fontSize: 15,
-                          fontFamily: 'Poppins',
                           fontWeight: FontWeight.w600,
                         ),
                         enabledBorder: OutlineInputBorder(
@@ -228,7 +222,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         errorStyle: TextStyle(
                           color: Color(0xFFA30000),
                           fontSize: 13,
-                          fontFamily: 'Poppins',
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -286,7 +279,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 20,
-                              fontFamily: 'Poppins',
                               fontWeight: FontWeight.w500,
                             ),
                           ),
