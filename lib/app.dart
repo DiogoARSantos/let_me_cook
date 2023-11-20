@@ -23,6 +23,7 @@ class _AppState extends State<App> {
   List<bool> boughtStatus = [];
   List<Recipe> favoriteRecipeList = [];
   List<Recipe> recipeList = [];
+  List<Recipe> myRecipes = [];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -60,6 +61,7 @@ class _AppState extends State<App> {
   void addRecipe(Recipe recipe) {
     setState(() {
       recipeList.add(recipe);
+      myRecipes.add(recipe);
     });
   }
 
@@ -75,7 +77,8 @@ class _AppState extends State<App> {
         page = HomeScreen(recipeList: recipeList);
         break;
       case 1:
-        page = ShoppingListScreen(shoppingList: shoppingList, boughtStatus:  boughtStatus);
+        page = ShoppingListScreen(
+            shoppingList: shoppingList, boughtStatus: boughtStatus);
         break;
       case 2:
         page = AddRecipeScreen(
@@ -86,7 +89,7 @@ class _AppState extends State<App> {
         break;
       case 4:
         page = ProfileScreen(
-          recipeList: recipeList,
+          recipeList: myRecipes,
           favoriteRecipeList: favoriteRecipeList,
         );
         break;
