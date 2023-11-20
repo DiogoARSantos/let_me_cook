@@ -1,11 +1,12 @@
-
-
 import 'package:flutter/material.dart';
-import 'package:let_me_cook/exampleRecipes.dart';
 
 import '../../models/Recipe.dart';
 
 class HomeScreen extends StatefulWidget {
+  final List<Recipe> recipeList;
+
+  HomeScreen({required this.recipeList});
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -19,9 +20,9 @@ class DataSearch extends SearchDelegate<String> {
     return query.isEmpty
         ? allData
         : allData
-            .where((recipe) =>
-                recipe.title.toLowerCase().contains(query.toLowerCase()))
-            .toList();
+        .where((recipe) =>
+        recipe.title.toLowerCase().contains(query.toLowerCase()))
+        .toList();
   }
 
   @override
@@ -91,12 +92,12 @@ class RecipeCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
-            height: 200.0,
+            height: 150.0,
             decoration: BoxDecoration(
               image: recipe.picture != null
                   ? DecorationImage(
-                image: FileImage(recipe.picture!),
-                fit: BoxFit.cover,
+                image: Image.asset("assets/images/chocolate-cake.jpg").image,
+                fit: BoxFit.fitHeight,
               )
                   : null,
             ),
@@ -134,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           SizedBox(height: 8),
           buildSearchTextField(context),
-          buildReceitasList(),
+          buildRecipesList(),
         ],
       ),
     );
@@ -175,7 +176,8 @@ class _HomeScreenState extends State<HomeScreen> {
       child: TextField(
         onChanged: (value) {
           showSearch(
-              context: context, delegate: DataSearch(allData: exampleRecipes));
+              context: context,
+              delegate: DataSearch(allData: widget.recipeList));
         },
         decoration: InputDecoration(
           hintText: 'Pesquisar...',
@@ -188,12 +190,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget buildReceitasList() {
+  Widget buildRecipesList() {
     return Expanded(
       child: ListView.builder(
-        itemCount: exampleRecipes.length,
+        itemCount: widget.recipeList.length,
         itemBuilder: (context, index) {
-          return RecipeCard(recipe: exampleRecipes[index]);
+          return RecipeCard(recipe: widget.recipeList[index]);
         },
       ),
     );
