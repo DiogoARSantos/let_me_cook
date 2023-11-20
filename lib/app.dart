@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:let_me_cook/screens/addRecipe/add_recipe_screen.dart';
-import 'package:let_me_cook/screens/seeRecipe/see_recipe_screen.dart';
-import 'package:let_me_cook/models/Ingredient.dart';
 import 'package:let_me_cook/screens/home/home_screen.dart';
 import 'package:let_me_cook/screens/pantry/pantry_screen.dart';
 import 'package:let_me_cook/screens/profile/profile_screen.dart';
 import 'package:let_me_cook/screens/shoppingList/shopping_list_screen.dart';
-
+import 'startRecipes.dart';
 import 'models/Recipe.dart';
 
 class App extends StatefulWidget {
@@ -22,7 +20,8 @@ class _AppState extends State<App> {
   List<String> shoppingList = [];
   List<bool> boughtStatus = [];
   List<Recipe> favoriteRecipeList = [];
-  List<Recipe> recipeList = [];
+  List<Recipe> recipeList = startRecipeList;
+  List<Recipe> myRecipes = [];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -72,7 +71,16 @@ class _AppState extends State<App> {
   void addRecipe(Recipe recipe) {
     setState(() {
       recipeList.add(recipe);
+      myRecipes.add(recipe);
     });
+  }
+
+  void addToPantry(String ingredient) {
+    if (!pantryList.contains(ingredient)) {
+      setState(() {
+        pantryList.add(ingredient);
+      });
+    }
   }
 
   @override
@@ -88,7 +96,10 @@ class _AppState extends State<App> {
         page = HomeScreen(recipeList: recipeList);
         break;
       case 1:
-        page = ShoppingListScreen(shoppingList: shoppingList, boughtStatus:  boughtStatus);
+        page = ShoppingListScreen(
+            shoppingList: shoppingList,
+            boughtStatus: boughtStatus,
+            addToPantry: addToPantry);
         break;
       case 2:
         page = AddRecipeScreen(
@@ -99,7 +110,7 @@ class _AppState extends State<App> {
         break;
       case 4:
         page = ProfileScreen(
-          recipeList: recipeList,
+          recipeList: myRecipes,
           favoriteRecipeList: favoriteRecipeList,
         );
         break;

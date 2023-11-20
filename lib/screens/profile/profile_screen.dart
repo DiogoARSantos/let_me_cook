@@ -13,15 +13,19 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState(title: 'Profile');
 }
 
-class MyAppState2 extends ChangeNotifier {
-  List<Recipe> recipeList = [];
-  List<Recipe> favoriteRecipeList = [];
-  MyAppState2({required this.recipeList, required this.favoriteRecipeList});
-  List<Recipe> get displayedRecipes {
-    return _displayFavorites ? favoriteRecipeList : recipeList;
-  }
+bool _displayFavorites = false;
 
-  bool _displayFavorites = false;
+class MyAppState2 extends ChangeNotifier {
+  ProfileScreen profileScreen;
+  MyAppState2(this.profileScreen);
+
+  List<Recipe> get displayedRecipes {
+    if (_displayFavorites == false) {
+      return profileScreen.recipeList;
+    } else {
+      return profileScreen.favoriteRecipeList;
+    }
+  }
 
   void toggleDisplayFavorites() {
     _displayFavorites = !_displayFavorites;
@@ -52,15 +56,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _onSearchChanged() {
-    final List<Recipe> sourceList =
-        context.read<MyAppState2>().displayedRecipes;
-    setState(() {
-      filteredRecipes = sourceList
-          .where((recipe) => recipe.title
-              .toLowerCase()
-              .contains(_searchController.text.toLowerCase()))
-          .toList();
-    });
+    if (_displayFavorites == false) {
+      setState(() {
+        filteredRecipes = widget.recipeList
+            .where((recipe) => recipe.title
+                .toLowerCase()
+                .contains(_searchController.text.toLowerCase()))
+            .toList();
+      });
+    } else {
+      setState(() {
+        filteredRecipes = widget.favoriteRecipeList
+            .where((recipe) => recipe.title
+                .toLowerCase()
+                .contains(_searchController.text.toLowerCase()))
+            .toList();
+      });
+    }
   }
 
   @override
@@ -68,9 +80,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var appState = context.watch<MyAppState>();
     var name = appState.name;
     return ChangeNotifierProvider(
-      create: (context) => MyAppState2(
-          recipeList: widget.recipeList,
-          favoriteRecipeList: widget.favoriteRecipeList),
+      create: (context) => MyAppState2(this.widget),
       child: Consumer<MyAppState2>(
         builder: (context, appState2, child) {
           Widget buildHeader() {
@@ -103,7 +113,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       appState2.toggleDisplayFavorites();
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: appState2._displayFavorites
+                      primary: _displayFavorites
                           ? Colors.transparent
                           : const Color.fromARGB(255, 175, 76, 76),
                       shape: RoundedRectangleBorder(
@@ -120,7 +130,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       appState2.toggleDisplayFavorites();
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: appState2._displayFavorites
+                      primary: _displayFavorites
                           ? const Color.fromARGB(255, 175, 76, 76)
                           : Colors.transparent,
                       shape: RoundedRectangleBorder(
@@ -156,9 +166,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Widget buildReceitasList() {
             return Expanded(
               child: ListView.builder(
-                itemCount: filteredRecipes.length,
+                itemCount: appState2.displayedRecipes.length,
                 itemBuilder: (context, index) {
-                  return RecipeCard(recipe: filteredRecipes[index]);
+                  return RecipeCard(recipe: appState2.displayedRecipes[index]);
                 },
               ),
             );
