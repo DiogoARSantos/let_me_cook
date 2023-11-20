@@ -434,12 +434,12 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
     if (_formKey.currentState == null || !_formKey.currentState!.validate()) {
       print("NULL");
     }
-    else if(_ingredients.isEmpty || _steps.isEmpty) {
+    else if(_ingredientsItems.isEmpty || _stepsItems.isEmpty) {
       showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) {
-          Future.delayed(Duration(seconds: 1), () {
+          Future.delayed(Duration(seconds: 2), () {
             Navigator.of(context).pop(true);
           });
           return AlertDialog(

@@ -8,8 +8,11 @@ class SeeRecipeScreen extends StatefulWidget {
   final Function(String) addToShoppingList;
   final Function(String) isInPantry;
   final Function(Recipe) addToFavoriteList;
+  final Function(Recipe) isInFavorties;
+  final Function(Recipe) removeFromFavorie;
 
-  SeeRecipeScreen({required this.recipe, required this.addToShoppingList, required this.isInPantry, required this.addToFavoriteList});
+  SeeRecipeScreen({required this.recipe, required this.addToShoppingList, required this.isInPantry, 
+  required this.addToFavoriteList, required this.isInFavorties, required this.removeFromFavorie});
 
 
   @override
@@ -18,12 +21,14 @@ class SeeRecipeScreen extends StatefulWidget {
 
 class SeeRecipeScreenState extends State<SeeRecipeScreen>{
   late Recipe _recipe;
+  late Icon heart;
 
   @override
   void initState() {
     super.initState();
     _recipe = widget.recipe;
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -36,21 +41,38 @@ class SeeRecipeScreenState extends State<SeeRecipeScreen>{
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [InkWell(
-              child: const Icon(Icons.favorite_border, size: 50),
+              child: heart = widget.isInFavorties(_recipe) 
+              ? Icon(Icons.favorite, size: 50)
+              : Icon(Icons.favorite_border_outlined, size: 50),
               onTap: () {
-                widget.addToFavoriteList(_recipe);
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (context) {
-                    Future.delayed(Duration(seconds: 1), () {
-                      Navigator.of(context).pop(true);
-                    });
-                    return AlertDialog(
-                      backgroundColor: Color(0xFFBF7979),
-                      title: Text('Adicionada aos Favoritos', textAlign: TextAlign.center, style: TextStyle(color: Colors.white),),
-                    );
+                if(widget.isInFavorties(_recipe)) {
+                  print(widget.isInFavorties(_recipe));
+                  widget.removeFromFavorie(_recipe);
+                  print(widget.isInFavorties(_recipe));
+                  setState(() {
+                    heart = Icon(Icons.favorite_border, size: 50);
                   });
+                }
+                else {
+                  print(!widget.isInFavorties(_recipe));
+                  widget.addToFavoriteList(_recipe);
+                  print(widget.isInFavorties(_recipe));
+                  setState(() {
+                    heart = Icon(Icons.favorite, size: 50);
+                  });
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) {
+                      Future.delayed(Duration(seconds: 1), () {
+                        Navigator.of(context).pop(true);
+                      });
+                      return AlertDialog(
+                        backgroundColor: Color(0xFFBF7979),
+                        title: Text('Adicionada aos Favoritos', textAlign: TextAlign.center, style: TextStyle(color: Colors.white),),
+                      );
+                  });
+                }
               },
             ),
           ]),
