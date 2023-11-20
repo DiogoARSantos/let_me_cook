@@ -6,7 +6,7 @@ import 'package:let_me_cook/screens/home/home_screen.dart';
 import 'package:let_me_cook/screens/pantry/pantry_screen.dart';
 import 'package:let_me_cook/screens/profile/profile_screen.dart';
 import 'package:let_me_cook/screens/shoppingList/shopping_list_screen.dart';
-
+import 'startRecipes.dart';
 import 'models/Recipe.dart';
 
 class App extends StatefulWidget {
@@ -22,7 +22,7 @@ class _AppState extends State<App> {
   List<String> shoppingList = [];
   List<bool> boughtStatus = [];
   List<Recipe> favoriteRecipeList = [];
-  List<Recipe> recipeList = [];
+  List<Recipe> recipeList = startRecipeList;
   List<Recipe> myRecipes = [];
 
   void _onItemTapped(int index) {
