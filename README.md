@@ -33,7 +33,8 @@ Desenvolvida pelos alunos da FCT Nova no âmbito da cadeira de IPM:
   - Limpar lista de compras 
   - Criar múltiplas listas de compras
 - *Criar uma nova receita*
-  - Inserir foto, título, ingredientes, etc :white_check_mark: 
+  - Inserir foto, título, ingredientes, etc :white_check_mark:
+  - Finalizar a criação da receita e adicionar à aplicação :white_check_mark:
   - Selecionar ingrediente a partir de uma lista 
   - Selecionar Unidades do ingrediente a partir de uma lista 
   - Confirmação antes de criar a receita 
