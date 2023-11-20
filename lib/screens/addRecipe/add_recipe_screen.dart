@@ -7,7 +7,11 @@ import 'dart:io';
 //import 'package:let_me_cook/screens/home/components/body.dart';
 
 class AddRecipeScreen extends StatefulWidget {
-  const AddRecipeScreen({Key? key}) : super(key: key);
+
+  final Function(Recipe) addRecipe;
+  final Function() backToHomeScreen;
+
+  AddRecipeScreen({required this.addRecipe, required this.backToHomeScreen});
 
   @override
   AddRecipeScreenState createState() => AddRecipeScreenState();
@@ -18,8 +22,8 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
   String _title = '';
   int _portions = 0;
   int _duration = 0;
-  List _ingredients = List.empty();
-  List _steps = List.empty();
+  List<Ingredient> _ingredients = List.empty(growable: true);
+  List _steps = List.empty(growable: true);
   final _formKey = GlobalKey<FormState>();
   final List<TextEditingController> _ingredientsItems = [];
   final List<TextEditingController> _ingredientsQts = [];
@@ -344,7 +348,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
   
   Future _pickImageFromGallery() async{
     final picker = ImagePicker();
-      final image = await picker.pickImage(source: ImageSource.gallery);
+      final image = await picker.pickImage(source: ImageSource.camera);
 
       setState(() {
         if (image != null) {
@@ -468,6 +472,8 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
       }
       Recipe recipe = Recipe(picture: _selectedImage, title: _title, portions: _portions, 
       duration: _duration, ingredients: _ingredients, steps: _steps);
+      widget.addRecipe(recipe);
+      widget.backToHomeScreen();
     }
     else {
       print("NULL");

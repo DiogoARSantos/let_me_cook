@@ -25,6 +25,12 @@ class _AppState extends State<App> {
     });
   }
 
+  void backToHomeScreen() {
+    setState(() {
+      _selectedIndex = 0;
+    });
+  }
+
   void addToShoppingList(String ingredient) {
     if (!shoppingList.contains(ingredient)) {
       setState(() {
@@ -53,7 +59,7 @@ class _AppState extends State<App> {
         page = ShoppingListScreen(shoppingList: shoppingList);
         break;
       case 2:
-        page = AddRecipeScreen(addRecipe: addRecipe);
+        page = AddRecipeScreen(addRecipe: addRecipe, backToHomeScreen: backToHomeScreen);
         break;
       case 3:
         page = PantryScreen();

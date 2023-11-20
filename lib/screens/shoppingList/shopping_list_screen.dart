@@ -54,11 +54,10 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                     style: TextStyle(
                       height: 2,
                       fontSize: 30,
-                      fontFamily: 'Poppins',
                       fontWeight: FontWeight.bold,
                     )),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 8),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
@@ -75,6 +74,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                       borderSide: BorderSide(
                           color: Color(0xFFBF7979)), // Set transparent color
                     ),
+                    contentPadding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
                   ),
                   onChanged: (value) {
                     _onSearchChanged();

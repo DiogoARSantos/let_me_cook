@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:let_me_cook/screens/home/widgets/RecipeCard.dart';
 
 import '../../models/Recipe.dart';
 
@@ -79,92 +80,23 @@ class DataSearch extends SearchDelegate<String> {
   }
 }
 
-class RecipeCard extends StatelessWidget {
-  final Recipe recipe;
-
-  RecipeCard({required this.recipe});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            height: 150.0,
-            decoration: BoxDecoration(
-              image: recipe.picture != null
-                  ? DecorationImage(
-                image: Image.asset("assets/images/chocolate-cake.jpg").image,
-                fit: BoxFit.fitHeight,
-              )
-                  : null,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              recipe.title,
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          buildCustomAppBar(),
-          SizedBox(height: 10),
           Text(
             'Receitas',
             style: TextStyle(
-              fontSize: 30.0,
+              height: 2,
+              fontSize: 30,
               fontWeight: FontWeight.bold,
             ),
           ),
           SizedBox(height: 8),
           buildSearchTextField(context),
           buildRecipesList(),
-        ],
-      ),
-    );
-  }
-
-  Widget buildCustomAppBar() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
-      color: Colors.transparent,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {
-                  // Ação para o ícone de notificação
-                },
-                icon: Icon(Icons.notifications, size: 35.0),
-              ),
-              SizedBox(width: 8),
-            ],
-          ),
-          IconButton(
-            onPressed: () {
-              // Ação para o ícone de configurações
-            },
-            icon: Icon(Icons.settings, size: 35.0),
-          ),
         ],
       ),
     );
@@ -180,9 +112,20 @@ class _HomeScreenState extends State<HomeScreen> {
               delegate: DataSearch(allData: widget.recipeList));
         },
         decoration: InputDecoration(
-          hintText: 'Pesquisar...',
+          hintText: 'Pesquisar receita...',
+          prefixIcon: Icon(
+            Icons.search,
+            color: Color(0xFFBF7979),
+            size: 40,
+          ),
           border: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black, width: 1.0),
+            borderSide: BorderSide(
+                color: Color(0xFFBF7979)
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+                color: Color(0xFFBF7979)), // Set transparent color
           ),
           contentPadding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
         ),

@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           appBarTheme: AppBarTheme(color: Colors.white, elevation: 3),
           visualDensity: VisualDensity.adaptivePlatformDensity,
+          primaryColor: Colors.white,
         ),
         initialRoute: '/login', // Set the initial route
         routes: {
