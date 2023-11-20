@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:let_me_cook/screens/addRecipe/add_recipe_screen.dart';
-import 'package:let_me_cook/screens/seeRecipe/see_recipe_screen.dart';
-import 'package:let_me_cook/models/Ingredient.dart';
 import 'package:let_me_cook/screens/home/home_screen.dart';
 import 'package:let_me_cook/screens/pantry/pantry_screen.dart';
 import 'package:let_me_cook/screens/profile/profile_screen.dart';
@@ -65,6 +63,14 @@ class _AppState extends State<App> {
     });
   }
 
+  void addToPantry(String ingredient) {
+    if (!pantryList.contains(ingredient)) {
+      setState(() {
+        pantryList.add(ingredient);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget page;
@@ -78,7 +84,9 @@ class _AppState extends State<App> {
         break;
       case 1:
         page = ShoppingListScreen(
-            shoppingList: shoppingList, boughtStatus: boughtStatus);
+            shoppingList: shoppingList,
+            boughtStatus: boughtStatus,
+            addToPantry: addToPantry);
         break;
       case 2:
         page = AddRecipeScreen(

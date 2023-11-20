@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 
-import '../../allIngredients.dart';
 import 'IngredientSearchScreen.dart';
 
 class ShoppingListScreen extends StatefulWidget {
   final List<String> shoppingList;
   final List<bool> boughtStatus;
+  final Function(String) addToPantry;
 
-  ShoppingListScreen({
-    required this.shoppingList,required this.boughtStatus
-  });
+  ShoppingListScreen(
+      {required this.shoppingList,
+        required this.boughtStatus,
+        required this.addToPantry});
 
   @override
   State<ShoppingListScreen> createState() => _ShoppingListScreenState();
@@ -22,6 +23,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
   List<String> filteredIngredients = [];
   List<bool> boughtStatus = [];
   List<String> displayedShoppingList = [];
+  late Function(String) addToPantry;
 
   @override
   void initState() {
@@ -29,6 +31,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
     shoppingList = widget.shoppingList;
     boughtStatus = widget.boughtStatus;
     displayedShoppingList = shoppingList;
+    addToPantry = widget.addToPantry;
   }
 
   void _onSearchChanged(String query) {
@@ -45,7 +48,8 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => IngredientSearchScreen(
-          shoppingList: shoppingList, boughtStatus: boughtStatus,
+          shoppingList: shoppingList,
+          boughtStatus: boughtStatus,
         ),
       ),
     );
@@ -91,7 +95,8 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                       borderSide: BorderSide(
                           color: Color(0xFFBF7979)), // Set transparent color
                     ),
-                    contentPadding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
+                    contentPadding:
+                    EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
                   ),
                   onChanged: (value) {
                     _onSearchChanged(value);
@@ -106,7 +111,8 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                       title: Text(
                         displayedShoppingList[index],
                         style: TextStyle(
-                          decoration: boughtStatus.isNotEmpty && boughtStatus[index]
+                          decoration:
+                          boughtStatus.isNotEmpty && boughtStatus[index]
                               ? TextDecoration.lineThrough
                               : TextDecoration.none,
                         ),
@@ -117,6 +123,9 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                           setState(() {
                             boughtStatus[index] = value ?? false;
                           });
+                          if (value == true) {
+                            addToPantry(displayedShoppingList[index]);
+                          }
                         },
                       ),
                       trailing: IconButton(
