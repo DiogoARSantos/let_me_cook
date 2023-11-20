@@ -4,9 +4,10 @@ import '../../allIngredients.dart';
 
 class ShoppingListScreen extends StatefulWidget {
   final List<String> shoppingList;
+  final List<bool> boughtStatus;
 
   ShoppingListScreen({
-    required this.shoppingList,
+    required this.shoppingList,required this.boughtStatus
   });
 
   @override
@@ -16,12 +17,16 @@ class ShoppingListScreen extends StatefulWidget {
 class _ShoppingListScreenState extends State<ShoppingListScreen> {
   TextEditingController _searchController = TextEditingController();
 
+  List<String> shoppingList = [];
   List<String> filteredIngredients = [];
+  List<bool> boughtStatus = [];
 
   @override
   void initState() {
     super.initState();
     _searchController.addListener(_onSearchChanged);
+    shoppingList = widget.shoppingList;
+    boughtStatus = widget.boughtStatus;
   }
 
   @override
@@ -35,8 +40,8 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
     setState(() {
       filteredIngredients = allIngredients
           .where((ingredient) => ingredient
-              .toLowerCase()
-              .contains(_searchController.text.toLowerCase()))
+          .toLowerCase()
+          .contains(_searchController.text.toLowerCase()))
           .toList();
     });
   }
@@ -83,15 +88,32 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: widget.shoppingList.length,
+                  itemCount: shoppingList.length,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      title: Text(widget.shoppingList[index]),
+                      title: Text(
+                        shoppingList[index],
+                        // Apply strike-through if the ingredient is bought
+                        style: TextStyle(
+                          decoration: boughtStatus.isNotEmpty && boughtStatus[index]
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none,
+                        ),
+                      ),
+                      leading: Checkbox(
+                        value: boughtStatus.isNotEmpty && boughtStatus[index],
+                        onChanged: (bool? value) {
+                          setState(() {
+                            boughtStatus[index] = value ?? false;
+                          });
+                        },
+                      ),
                       trailing: IconButton(
                         icon: Icon(Icons.delete),
                         onPressed: () {
                           setState(() {
-                            widget.shoppingList.removeAt(index);
+                            shoppingList.removeAt(index);
+                            boughtStatus.removeAt(index);
                           });
                         },
                       ),
@@ -124,8 +146,9 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                         title: Text(ingredient),
                         onTap: () {
                           setState(() {
-                            if (!widget.shoppingList.contains(ingredient)) {
-                              widget.shoppingList.add(ingredient);
+                            if (!shoppingList.contains(ingredient)) {
+                              shoppingList.add(ingredient);
+                              boughtStatus.add(false);
                             }
                             _searchController.clear();
                             filteredIngredients.clear();

@@ -18,6 +18,7 @@ class _AppState extends State<App> {
   int _selectedIndex = 0;
   List<String> pantryList = [];
   List<String> shoppingList = [];
+  List<bool> boughtStatus = [];
   List<Recipe> favoriteRecipeList = [];
   List<Recipe> recipeList = [];
 
@@ -41,6 +42,7 @@ class _AppState extends State<App> {
     if (!shoppingList.contains(ingredient)) {
       setState(() {
         shoppingList.add(ingredient);
+        boughtStatus.add(false);
       });
     }
   }
@@ -64,21 +66,21 @@ class _AppState extends State<App> {
     Widget page;
     switch (_selectedIndex) {
       case 0:
-        /*Ingredient i1 = Ingredient(name: "Ing1", quantity: 10, units: "g");
+      /*Ingredient i1 = Ingredient(name: "Ing1", quantity: 10, units: "g");
         Ingredient i2 = Ingredient(name: "Ing2", quantity: 5, units: "L");
         Recipe r = Recipe(title: "Bolo de chocolate", portions: 3, duration: 30, ingredients: [i1,i2], steps: ["Passo1: dnkjdbvjv", "Passo2: sfdbdn\nifdndnj", "Passo3: inaind"]);
         page = SeeRecipeScreen(recipe: r, addToShoppingList: addToShoppingList, isInPantry: isInPantry, addToFavoriteList: addToFavoriteList,);//ShoppingListScreen();*/
         page = HomeScreen(recipeList: recipeList);
         break;
       case 1:
-        page = ShoppingListScreen(shoppingList: shoppingList);
+        page = ShoppingListScreen(shoppingList: shoppingList, boughtStatus:  boughtStatus);
         break;
       case 2:
         page = AddRecipeScreen(
             addRecipe: addRecipe, backToHomeScreen: backToHomeScreen);
         break;
       case 3:
-        page = PantryScreen();
+        page = PantryScreen(pantryList: pantryList);
         break;
       case 4:
         page = ProfileScreen(
