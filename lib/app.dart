@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:let_me_cook/screens/addRecipe/add_recipe_screen.dart';
+import 'package:let_me_cook/screens/seeRecipe/see_recipe_screen.dart';
+import 'package:let_me_cook/models/Ingredient.dart';
 import 'package:let_me_cook/screens/home/home_screen.dart';
 import 'package:let_me_cook/screens/pantry/pantry_screen.dart';
 import 'package:let_me_cook/screens/profile/profile_screen.dart';
@@ -66,11 +68,11 @@ class _AppState extends State<App> {
     Widget page;
     switch (_selectedIndex) {
       case 0:
-      /*Ingredient i1 = Ingredient(name: "Ing1", quantity: 10, units: "g");
+        Ingredient i1 = Ingredient(name: "Ing1", quantity: 10, units: "g");
         Ingredient i2 = Ingredient(name: "Ing2", quantity: 5, units: "L");
         Recipe r = Recipe(title: "Bolo de chocolate", portions: 3, duration: 30, ingredients: [i1,i2], steps: ["Passo1: dnkjdbvjv", "Passo2: sfdbdn\nifdndnj", "Passo3: inaind"]);
-        page = SeeRecipeScreen(recipe: r, addToShoppingList: addToShoppingList, isInPantry: isInPantry, addToFavoriteList: addToFavoriteList,);//ShoppingListScreen();*/
-        page = HomeScreen(recipeList: recipeList);
+        page = SeeRecipeScreen(recipe: r, addToShoppingList: addToShoppingList, isInPantry: isInPantry, addToFavoriteList: addToFavoriteList,);
+        //page = HomeScreen(recipeList: recipeList);
         break;
       case 1:
         page = ShoppingListScreen(shoppingList: shoppingList, boughtStatus:  boughtStatus);

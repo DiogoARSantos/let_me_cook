@@ -356,7 +356,8 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
         border: OutlineInputBorder( borderRadius: BorderRadius.circular(20),)
       ),
       validator: (value) {
-        if (value == null || value.isEmpty) {        
+        if (value == null || value.isEmpty) {    
+          return "Introduzir porções";
         }
         return null;
       },
@@ -377,6 +378,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
+          return "Introduzir duração";
         }
         return null;
       },
@@ -429,7 +431,24 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
   }
 
   void _createRecipe() {
-    if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+    if (_formKey.currentState == null || !_formKey.currentState!.validate()) {
+      print("NULL");
+    }
+    else if(_ingredients.isEmpty || _steps.isEmpty) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          Future.delayed(Duration(seconds: 1), () {
+            Navigator.of(context).pop(true);
+          });
+          return AlertDialog(
+            backgroundColor: Colors.red,
+            title: Text('Ingredientes e passos necessários', textAlign: TextAlign.center, style: TextStyle(color: Colors.white),),
+          );
+        });
+    }
+    else {
       _formKey.currentState!.save();
       for(int i=0; i < _ingredientsItems.length; i++) {
         Ingredient igt = Ingredient(name: _ingredientsItems[i].text, quantity: int.parse(_ingredientsQts[i].text), 
@@ -443,9 +462,6 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
       duration: _duration, ingredients: _ingredients, steps: _steps);
       widget.addRecipe(recipe);
       widget.backToHomeScreen();
-    }
-    else {
-      print("NULL");
     }
   }
 }

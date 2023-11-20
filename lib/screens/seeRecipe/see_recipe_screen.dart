@@ -97,7 +97,6 @@ class SeeRecipeScreenState extends State<SeeRecipeScreen>{
               children: [
                 Text("${_recipe.portions}\n(Porções)", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
                 Text("${_recipe.duration} mins\n(Duração)", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), textAlign: TextAlign.center)
-                //Tex
               ]
           ),
           SizedBox(height: 10),
@@ -109,7 +108,11 @@ class SeeRecipeScreenState extends State<SeeRecipeScreen>{
           SizedBox(height: 20),
 
           //INGREDIENTS
-          Text("Ingredientes", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+          Row(
+          children: [
+            Text("Ingredientes", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            ],
+          ),
           SizedBox(height: 10),
           for(int i=0; i < _recipe.ingredients.length; i++)
             Row(
@@ -118,7 +121,7 @@ class SeeRecipeScreenState extends State<SeeRecipeScreen>{
                 widget.isInPantry(_recipe.ingredients[i].name)
                 ? InkWell(child: const Icon(Icons.check_circle, color: Colors.green),)
                 :InkWell(
-                  child: const Icon(Icons.shopping_cart, color: Colors.red),
+                  child: const Icon(Icons.shopping_cart, color: Colors.red, size: 35),
                   onTap: () {
                     widget.addToShoppingList(_recipe.ingredients[i].name);
                     showDialog(
@@ -136,18 +139,22 @@ class SeeRecipeScreenState extends State<SeeRecipeScreen>{
                   },
                 ),
                 Text("${_recipe.ingredients[i].quantity} ${_recipe.ingredients[i].units} ${_recipe.ingredients[i].name}", 
-                style: TextStyle(fontSize: 18)),
+                style: TextStyle(fontSize: 20)),
               ],
             ),
           SizedBox(height: 20),
 
           //STEPS
-          Text("Passos", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+          Row(
+            children: [
+              Text("Passos", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            ],
+          ),
           SizedBox(height: 10),
           for(int i=0; i < _recipe.steps.length; i++)
             Row(
               children: [
-                Text("${_recipe.steps[i]}\n", style: TextStyle(fontSize: 18)),
+                Text("${_recipe.steps[i]}", style: TextStyle(fontSize: 20)),
               ]
             ),
         ],
