@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:let_me_cook/models/Recipe.dart';
+// ignore: unused_import
 import 'package:let_me_cook/models/Ingredient.dart';
 
 class SeeRecipeScreen extends StatefulWidget {
   final Recipe recipe;
+  final Function(String) addToShoppingList;
+  final Function(String) isInPantry;
+  final Function(Recipe) addToFavoriteList;
 
-  SeeRecipeScreen({required this.recipe});
+  SeeRecipeScreen({required this.recipe, required this.addToShoppingList, required this.isInPantry, required this.addToFavoriteList});
 
 
   @override
-  SeeRecipeScreenState createState() => SeeRecipeScreenState();
+  State<SeeRecipeScreen> createState() => SeeRecipeScreenState();
 }
 
 class SeeRecipeScreenState extends State<SeeRecipeScreen>{
@@ -26,7 +30,30 @@ class SeeRecipeScreenState extends State<SeeRecipeScreen>{
     return ListView(
       children: [Column(
         children: <Widget>[
-          SizedBox(height: 20),
+          SizedBox(height: 10),
+
+          //Favorite
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [InkWell(
+              child: const Icon(Icons.favorite_border, size: 50),
+              onTap: () {
+                widget.addToFavoriteList(_recipe);
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (context) {
+                    Future.delayed(Duration(seconds: 1), () {
+                      Navigator.of(context).pop(true);
+                    });
+                    return AlertDialog(
+                      backgroundColor: Color(0xFFBF7979),
+                      title: Text('Adicionada aos Favoritos', textAlign: TextAlign.center, style: TextStyle(color: Colors.white),),
+                    );
+                  });
+              },
+            ),
+          ]),
 
           //Picture
           _recipe.picture == null
@@ -82,18 +109,30 @@ class SeeRecipeScreenState extends State<SeeRecipeScreen>{
           SizedBox(height: 20),
 
           //INGREDIENTS
-          Align(
-            alignment: Alignment(-0.85,0),
-            child: Text("Ingredientes", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-          ),
+          Text("Ingredientes", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           SizedBox(height: 10),
           for(int i=0; i < _recipe.ingredients.length; i++)
             Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                InkWell(
-                  child: const Icon(Icons.delete_outline),
+                widget.isInPantry(_recipe.ingredients[i].name)
+                ? InkWell(child: const Icon(Icons.check_circle, color: Colors.green),)
+                :InkWell(
+                  child: const Icon(Icons.shopping_cart, color: Colors.red),
                   onTap: () {
-                    
+                    widget.addToShoppingList(_recipe.ingredients[i].name);
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) {
+                        Future.delayed(Duration(seconds: 1), () {
+                          Navigator.of(context).pop(true);
+                        });
+                        return AlertDialog(
+                          backgroundColor: Color(0xFFBF7979),
+                          title: Text('Adicionado à Lista de Compras', textAlign: TextAlign.center, style: TextStyle(color: Colors.white),),
+                        );
+                      });
                   },
                 ),
                 Text("${_recipe.ingredients[i].quantity} ${_recipe.ingredients[i].units} ${_recipe.ingredients[i].name}", 
@@ -103,16 +142,14 @@ class SeeRecipeScreenState extends State<SeeRecipeScreen>{
           SizedBox(height: 20),
 
           //STEPS
-          Align(
-            alignment: Alignment(-0.85,0),
-            child: Text("Passos", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-          ),
+          Text("Passos", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           SizedBox(height: 10),
           for(int i=0; i < _recipe.steps.length; i++)
-            Align(
-              alignment: Alignment(-0.8,0),
-              child: Text("${_recipe.steps[i]}", style: TextStyle(fontSize: 18)),
-            )
+            Row(
+              children: [
+                Text("${_recipe.steps[i]}\n", style: TextStyle(fontSize: 18)),
+              ]
+            ),
         ],
       ),
     ]);

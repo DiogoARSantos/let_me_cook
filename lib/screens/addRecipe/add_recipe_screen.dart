@@ -7,10 +7,12 @@ import 'dart:io';
 //import 'package:let_me_cook/screens/home/components/body.dart';
 
 class AddRecipeScreen extends StatefulWidget {
-  const AddRecipeScreen({Key? key}) : super(key: key);
+  final Function(Recipe) addRecipe;
+
+  AddRecipeScreen({required this.addRecipe});
 
   @override
-  AddRecipeScreenState createState() => AddRecipeScreenState();
+  State<AddRecipeScreen> createState() => AddRecipeScreenState();
 }
 
 class AddRecipeScreenState extends State<AddRecipeScreen> {
@@ -18,43 +20,13 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
   String _title = '';
   int _portions = 0;
   int _duration = 0;
-  List _ingredients = List.empty();
-  List _steps = List.empty();
+  List<Ingredient> _ingredients = [];
+  List<String> _steps = [];
   final _formKey = GlobalKey<FormState>();
   final List<TextEditingController> _ingredientsItems = [];
   final List<TextEditingController> _ingredientsQts = [];
   final List<TextEditingController> _ingredientsUnits = [];
   final List<TextEditingController> _stepsItems = [];
-  final List<String> _allIngredients = [
-    "alho", "azeite", "abacate", "acelga", "agrião", "amêndoa", "avelã", "abóbora", "bacon", "batata",
-    "berinjela", "beterraba", "brócolis", "canela", "cebola", "cenoura", "chá", "champignon", "chocolate", "coentro",
-    "couve", "cogumelo", "café", "castanha", "creme", "coco", "camarão", "carne", "cevada", "limão",
-    "laranja", "lima", "leite", "levedura", "lentilha", "pimenta", "pimentão", "pepino", "pêssego", "pera",
-    "abacaxi", "uva", "kiwi", "morango", "maçã", "melancia", "melão", "manjericão", "manjerona", "mostarda",
-    "macarrão", "mel", "manga", "manteiga", "noz", "noz-moscada", "azeitona", "oregano", "ovos", "cebolinha",
-    "coentro", "pistache", "pitanga", "polenta", "pão", "queijo", "quinoa", "rabanete", "repolho", "rúcula",
-    "salsa", "salsão", "salvia", "soja", "gelado", "sumo", "tamarindo", "tâmaras", "tapioca", "tangerina",
-    "tomate", "trigo", "tutano", "uva-passa", "vatapá", "vinagre", "vodka", "wasabi", "yogurte", "zenzero",
-    "zimbro", "zimbro", "abadejo", "acarajé", "alcaparra", "alcachofra", "alface", "alho-poró", "almeirão", "amendoim", "anchova",
-    "anis", "aspargo", "atum", "avelã", "bacalhau", "bacuri", "banana", "baroa", "batata-doce", "beldroega",
-    "beterraba", "biscoito", "bisteca", "brócolis", "cabrito", "cacau", "café", "caipirinha", "caju", "caldo-de-carne",
-    "caldo-de-frango", "camarão", "canela", "capim-limão", "carambola", "carneiro", "castanha-do-pará", "catupiry", "caviar", "cebola-roxa",
-    "cebolinha", "cevada", "charque", "cheddar", "chicória", "chocolate", "chouriço", "chuchu", "cidra", "coalhada",
-    "cogumelo", "coentro", "coentro", "cominho", "couve-flor", "cravo", "cúrcuma", "curry", "damasco", "doce-de-leite",
-    "endívia", "erva-doce", "escargot", "espargos", "espinafre", "estrogonofe", "farinha", "feijão", "fondue", "frango",
-    "fubá", "funcho", "gema", "grão-de-bico", "guacamole", "hamúrguer", "hortelã", "iogurte", "jabuticaba", "jaca",
-    "jambu", "jamón", "jatobá", "ketchup", "kiwi", "lagosta", "leite", "limão-siciliano", "linguiça", "lombo",
-    "lula", "mamão", "manjericão", "maracujá", "menta", "merengue", "milho", "miso", "mostarda", "mousse",
-    "nabo", "nachos", "nêspera", "noz-moscada", "nhoque", "nopal", "nozes", "oguias", "olho-de-boi", "orégano",
-    "paçoca", "palmito", "pão", "papaya", "paprika", "parmesão", "pasta-de-amendoim", "pasta-de-alho", "pastel", "peito-de-peru",
-    "pepitas", "pepino-japonês", "percebes", "pêssego", "pimenta", "pimenta-do-reino", "pimentão", "pinhão", "pipoca", "pistache",
-    "pitanga", "polenta", "presunto", "queijo", "quiabo", "quinoa", "rabada", "rabanete", "ravióli", "requeijão",
-    "ricota", "risoto", "romã", "rondele", "rúcula", "sal", "salame", "salmão", "salsão", "salsa",
-    "salsicha", "sashimi", "shimeji", "soja", "sorvete", "sushi", "tabasco", "tamarindo", "tangerina", "tapioca",
-    "tartar", "tender", "tequila", "teriyaki", "tofu", "tomate", "trigo", "trufa", "tutano", "uísque",
-    "uva", "vatapá", "vinagre", "vodka", "wasabi", "waffle", "x-bacon", "x-burger", "x-egg", "x-frango",
-    "fiambre", "yakisoba", "yogurte", "zacusca", "zenzero", "zimbro", "zabaione", "ziti", "zabaione", "ziti"
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -170,7 +142,6 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                       Expanded(flex: 3, child: Padding(
                         padding: EdgeInsets.all(2),
                         child: TextFormField(
-                          autofillHints: _allIngredients,
                           controller: _ingredientsItems[i],
                           decoration: InputDecoration(
                             labelText: 'Ingrediente', 
@@ -466,8 +437,13 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
       for(int i=0; i < _stepsItems.length; i++) {
         _steps.add(_stepsItems[i].text);
       }
-      Recipe recipe = Recipe(picture: _selectedImage, title: _title, portions: _portions, 
-      duration: _duration, ingredients: _ingredients, steps: _steps);
+      Recipe recipe = Recipe(picture: _selectedImage,
+        title: _title,
+        portions: _portions,
+        duration: _duration,
+        ingredients: _ingredients,
+        steps: _steps);
+      widget.addRecipe(recipe);
     }
     else {
       print("NULL");

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:let_me_cook/models/Ingredient.dart';
 import 'package:let_me_cook/screens/addRecipe/add_recipe_screen.dart';
+import 'package:let_me_cook/screens/seeRecipe/see_recipe_screen.dart';
 import 'package:let_me_cook/screens/home/home_screen.dart';
 import 'package:let_me_cook/screens/pantry/pantry_screen.dart';
 import 'package:let_me_cook/screens/profile/profile_screen.dart';
@@ -16,7 +18,9 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   int _selectedIndex = 0;
+  List<String> pantryList = [];
   List<String> shoppingList = [];
+  List<Recipe> favoriteRecipeList = [];
   List<Recipe> recipeList = [];
 
   void _onItemTapped(int index) {
@@ -25,10 +29,22 @@ class _AppState extends State<App> {
     });
   }
 
+  bool isInPantry(String ingredient) {
+    return pantryList.contains(ingredient);
+  }
+
   void addToShoppingList(String ingredient) {
     if (!shoppingList.contains(ingredient)) {
       setState(() {
         shoppingList.add(ingredient);
+      });
+    }
+  }
+
+  void addToFavoriteList(Recipe recipe) {
+    if (!favoriteRecipeList.contains(recipe)) {
+      setState(() {
+        favoriteRecipeList.add(recipe);
       });
     }
   }
@@ -47,6 +63,10 @@ class _AppState extends State<App> {
     Widget page;
     switch (_selectedIndex) {
       case 0:
+        /*Ingredient i1 = Ingredient(name: "Ing1", quantity: 10, units: "g");
+        Ingredient i2 = Ingredient(name: "Ing2", quantity: 5, units: "L");
+        Recipe r = Recipe(title: "Bolo de chocolate", portions: 3, duration: 30, ingredients: [i1,i2], steps: ["Passo1: dnkjdbvjv", "Passo2: sfdbdn\nifdndnj", "Passo3: inaind"]);
+        page = SeeRecipeScreen(recipe: r, addToShoppingList: addToShoppingList, isInPantry: isInPantry, addToFavoriteList: addToFavoriteList,);//ShoppingListScreen();*/
         page = HomeScreen();
         break;
       case 1:
