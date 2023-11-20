@@ -24,6 +24,7 @@ Desenvolvida pelos alunos da FCT Nova no âmbito da cadeira de IPM:
 - *Ver a página de uma receita (passos, ingredients, etc)*
   - Ver os ingredientes que faltam ou não na receita :white_check_mark: 
   - Adicionar os ingredientes em falta à lista de compras :white_check_mark: 
+  - Adicionar receita aos favoritos :white_check_mark:
   - Editar receita 
 - *Lista de compras*
   - Adicionar novo ingrediente :white_check_mark: 
@@ -40,8 +41,8 @@ Desenvolvida pelos alunos da FCT Nova no âmbito da cadeira de IPM:
   - Confirmação antes de criar a receita 
 - *Despensa*
   - Marcar/Desmarcar ingrediente como tendo em casa :white_check_mark: 
-  - Pesquisar ingrediente
-  - Ver só os ingredientes que tem 
+  - Pesquisar ingrediente :white_check_mark:
+  - Filtrar ingredientes por os ter ou não :white_check_mark: 
 - *Perfil*
   - Visualizar as próprias receitas :white_check_mark: 
   - Visualizar as receitas favoritas :white_check_mark: 
