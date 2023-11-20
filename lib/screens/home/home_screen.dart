@@ -161,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget buildCustomAppBar() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.0),
-      color: Colors.white,
+      color: Colors.transparent,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
