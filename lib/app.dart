@@ -47,7 +47,7 @@ class _AppState extends State<App> {
     Widget page;
     switch (_selectedIndex) {
       case 0:
-        page = HomeScreen();
+        page = HomeScreen(recipeList: recipeList);
         break;
       case 1:
         page = ShoppingListScreen(shoppingList: shoppingList);
@@ -90,7 +90,7 @@ class _AppState extends State<App> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),
-            label: 'New Recipe',
+            label: 'Nova Receita',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.kitchen),
