@@ -451,7 +451,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
     else {
       _formKey.currentState!.save();
       for(int i=0; i < _ingredientsItems.length; i++) {
-        Ingredient igt = Ingredient(name: _ingredientsItems[i].text, quantity: int.parse(_ingredientsQts[i].text), 
+        Ingredient igt = Ingredient(name: _ingredientsItems[i].text.toLowerCase(), quantity: int.parse(_ingredientsQts[i].text), 
         units: _ingredientsUnits[i].text);
         _ingredients.add(igt);
       }
