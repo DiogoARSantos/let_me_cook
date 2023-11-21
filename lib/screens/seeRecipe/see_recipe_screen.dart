@@ -205,7 +205,7 @@ class SeeRecipeScreenState extends State<SeeRecipeScreen> {
             SizedBox(height: 10),
             for (int i = 0; i < _recipe.steps.length; i++)
               Row(children: [
-                Text("${_recipe.steps[i]}", style: TextStyle(fontSize: 20)),
+                Text("${_recipe.steps[i]}", softWrap: true,style: TextStyle(fontSize: 20)),
               ]),
           ],
         ),
