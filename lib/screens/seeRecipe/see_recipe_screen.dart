@@ -8,11 +8,11 @@ class SeeRecipeScreen extends StatefulWidget {
   final Function(String) addToShoppingList;
   final Function(String) isInPantry;
   final Function(Recipe) addToFavoriteList;
-  final Function(Recipe) isInFavorties;
-  final Function(Recipe) removeFromFavorie;
+  final Function(Recipe) isInFavorites;
+  final Function(Recipe) removeFromFavorite;
 
   SeeRecipeScreen({required this.recipe, required this.addToShoppingList, required this.isInPantry, 
-  required this.addToFavoriteList, required this.isInFavorties, required this.removeFromFavorie});
+  required this.addToFavoriteList, required this.isInFavorites, required this.removeFromFavorite});
 
 
   @override
@@ -41,22 +41,22 @@ class SeeRecipeScreenState extends State<SeeRecipeScreen>{
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [InkWell(
-              child: heart = widget.isInFavorties(_recipe) 
+              child: heart = widget.isInFavorites(_recipe) 
               ? Icon(Icons.favorite, size: 50)
               : Icon(Icons.favorite_border_outlined, size: 50),
               onTap: () {
-                if(widget.isInFavorties(_recipe)) {
-                  print(widget.isInFavorties(_recipe));
-                  widget.removeFromFavorie(_recipe);
-                  print(widget.isInFavorties(_recipe));
+                if(widget.isInFavorites(_recipe)) {
+                  print(widget.isInFavorites(_recipe));
+                  widget.removeFromFavorite(_recipe);
+                  print(widget.isInFavorites(_recipe));
                   setState(() {
                     heart = Icon(Icons.favorite_border, size: 50);
                   });
                 }
                 else {
-                  print(!widget.isInFavorties(_recipe));
+                  print(!widget.isInFavorites(_recipe));
                   widget.addToFavoriteList(_recipe);
-                  print(widget.isInFavorties(_recipe));
+                  print(widget.isInFavorites(_recipe));
                   setState(() {
                     heart = Icon(Icons.favorite, size: 50);
                   });

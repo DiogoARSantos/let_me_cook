@@ -5,8 +5,18 @@ import '../../models/Recipe.dart';
 
 class HomeScreen extends StatefulWidget {
   final List<Recipe> recipeList;
+  final Function(String) addToShoppingList;
+  final Function(Recipe) isInFavorites;
+  final Function(String) isInPantry;
+  final Function(Recipe) addToFavoriteList;
+  final Function(Recipe) removeFromFavorite;
 
-  HomeScreen({required this.recipeList});
+  HomeScreen({required this.recipeList,required
+    this.addToShoppingList,
+    required this.isInPantry,
+    required this.addToFavoriteList,
+    required this.isInFavorites,
+    required this.removeFromFavorite});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -95,7 +105,12 @@ class _HomeScreenState extends State<HomeScreen> {
       child: ListView.builder(
         itemCount: filteredRecipes.length,
         itemBuilder: (context, index) {
-          return RecipeCard(recipe: filteredRecipes[index]);
+          return RecipeCard(recipe: filteredRecipes[index],
+              addToShoppingList: widget.addToShoppingList,
+              isInPantry: widget.isInPantry,
+              addToFavoriteList: widget.addToFavoriteList,
+              isInFavorites: widget.isInFavorites,
+              removeFromFavorite: widget.removeFromFavorite);
         },
       ),
     );
