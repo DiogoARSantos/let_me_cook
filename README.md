@@ -16,11 +16,17 @@ Desenvolvida pelos alunos da FCT Nova no âmbito da cadeira de IPM:
 - Adicionar as suas próprias receitas.
 - Adicionar receitas às suas favoritas para mais rápido as aceder e voltar a preparar.
 
+> [!IMPORTANT]
+> ## Nota antes de testar a aplicação
+> A aplicação, neste momento, conta com um número limitado de ingredientes então na criação de uma receita 
+> certifiquem-se que o nome do ingrediente consta na lista de todos os ingredientes presente na despensa.
+> Não houve tempo para implementar uma forma de selecionar o nome do ingrediente a partir da lista existente
+> então caso o nome não conste na lista, o ingrediente aparecerá sempre como não presente na despensa.
 
 ## O que está implementado
 - *Ver a lista de receitas*
   - Procurar pelo nome :white_check_mark: 
-  - Ir para a página da receita ao clicar 
+  - Ir para a página da receita ao clicar :white_check_mark:
 - *Ver a página de uma receita (passos, ingredients, etc)*
   - Ver os ingredientes que faltam ou não na receita :white_check_mark: 
   - Adicionar os ingredientes em falta à lista de compras :white_check_mark: 
@@ -46,7 +52,7 @@ Desenvolvida pelos alunos da FCT Nova no âmbito da cadeira de IPM:
 - *Perfil*
   - Visualizar as próprias receitas :white_check_mark: 
   - Visualizar as receitas favoritas :white_check_mark: 
-  - Ir para a página de cada receita ao clicar
+  - Ir para a página de cada receita ao clicar :white_check_mark:
 
 ## Ferramentas e tecnologias usadas
 - Android Studio/VSCode
