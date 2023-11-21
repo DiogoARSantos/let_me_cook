@@ -8,7 +8,19 @@ import 'package:let_me_cook/screens/home/widgets/RecipeCard.dart';
 class ProfileScreen extends StatefulWidget {
   List<Recipe> recipeList = [];
   List<Recipe> favoriteRecipeList = [];
-  ProfileScreen({required this.recipeList, required this.favoriteRecipeList});
+  final Function(String) addToShoppingList;
+  final Function(Recipe) isInFavorites;
+  final Function(String) isInPantry;
+  final Function(Recipe) addToFavoriteList;
+  final Function(Recipe) removeFromFavorite;
+  ProfileScreen({required this.recipeList, required this.favoriteRecipeList,
+    required this.addToShoppingList,
+    required this.isInPantry,
+    required this.addToFavoriteList,
+    required this.isInFavorites,
+    required this.removeFromFavorite});
+
+
   @override
   State<ProfileScreen> createState() => _ProfileScreenState(title: 'Profile');
 }
@@ -60,16 +72,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
       setState(() {
         filteredRecipes = widget.recipeList
             .where((recipe) => recipe.title
-                .toLowerCase()
-                .contains(_searchController.text.toLowerCase()))
+            .toLowerCase()
+            .contains(_searchController.text.toLowerCase()))
             .toList();
       });
     } else {
       setState(() {
         filteredRecipes = widget.favoriteRecipeList
             .where((recipe) => recipe.title
-                .toLowerCase()
-                .contains(_searchController.text.toLowerCase()))
+            .toLowerCase()
+            .contains(_searchController.text.toLowerCase()))
             .toList();
       });
     }
@@ -157,7 +169,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     borderSide: BorderSide(color: Colors.black, width: 1.0),
                   ),
                   contentPadding:
-                      EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
+                  EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
                 ),
               ),
             );
@@ -168,7 +180,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: ListView.builder(
                 itemCount: appState2.displayedRecipes.length,
                 itemBuilder: (context, index) {
-                  return RecipeCard(recipe: appState2.displayedRecipes[index]);
+                  return RecipeCard(recipe: appState2.displayedRecipes[index], addToShoppingList: widget.addToShoppingList,
+                      isInPantry: widget.isInPantry,
+                      addToFavoriteList: widget.addToFavoriteList,
+                      isInFavorites: widget.isInFavorites,
+                      removeFromFavorite: widget.removeFromFavorite);
                 },
               ),
             );

@@ -33,7 +33,7 @@ class _AppState extends State<App> {
     return pantryList.contains(ingredient);
   }
 
-  bool isInFavorties(Recipe recipe) {
+  bool isInFavorites(Recipe recipe) {
     return favoriteRecipeList.contains(recipe);
   }
 
@@ -60,7 +60,7 @@ class _AppState extends State<App> {
     }
   }
 
-  void removeFromFavorie(Recipe recipe) {
+  void removeFromFavorite(Recipe recipe) {
     if (favoriteRecipeList.contains(recipe)) {
       setState(() {
         favoriteRecipeList.remove(recipe);
@@ -91,9 +91,15 @@ class _AppState extends State<App> {
         /*Ingredient i1 = Ingredient(name: "mel", quantity: 10, units: "g");
         Ingredient i2 = Ingredient(name: "Ing2", quantity: 5, units: "L");
         Recipe r = Recipe(title: "Bolo de chocolate", portions: 3, duration: 30, ingredients: [i1,i2], steps: ["Passo1: dnkjdbvjv", "Passo2: sfdbdn\nifdndnj", "Passo3: inaind"]);
-        page = SeeRecipeScreen(recipe: r, addToShoppingList: addToShoppingList, isInPantry: isInPantry, 
+        page = SeeRecipeScreen(recipe: r, addToShoppingList: addToShoppingList, isInPantry: isInPantry,
         addToFavoriteList: addToFavoriteList, isInFavorties: isInFavorties, removeFromFavorie: removeFromFavorie);*/
-        page = HomeScreen(recipeList: recipeList);
+        page = HomeScreen(
+            recipeList: recipeList,
+            addToShoppingList: addToShoppingList,
+            isInPantry: isInPantry,
+            addToFavoriteList: addToFavoriteList,
+            isInFavorites: isInFavorites,
+            removeFromFavorite: removeFromFavorite);
         break;
       case 1:
         page = ShoppingListScreen(
@@ -110,9 +116,13 @@ class _AppState extends State<App> {
         break;
       case 4:
         page = ProfileScreen(
-          recipeList: myRecipes,
-          favoriteRecipeList: favoriteRecipeList,
-        );
+            recipeList: myRecipes,
+            favoriteRecipeList: favoriteRecipeList,
+            addToShoppingList: addToShoppingList,
+            isInPantry: isInPantry,
+            addToFavoriteList: addToFavoriteList,
+            isInFavorites: isInFavorites,
+            removeFromFavorite: removeFromFavorite);
         break;
       default:
         throw UnimplementedError('no widget for $_selectedIndex');
