@@ -198,15 +198,24 @@ class SeeRecipeScreenState extends State<SeeRecipeScreen> {
             Row(
               children: [
                 Text("Passos",
-                    style:
-                        TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
               ],
             ),
             SizedBox(height: 10),
-            for (int i = 0; i < _recipe.steps.length; i++)
-              Row(children: [
-                Text("${_recipe.steps[i]}", softWrap: true,style: TextStyle(fontSize: 20)),
-              ]),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: _recipe.steps.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  child: Text(
+                    "${index + 1}. ${_recipe.steps[index]}",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ]),
