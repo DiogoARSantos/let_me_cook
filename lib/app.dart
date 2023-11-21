@@ -16,10 +16,17 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   int _selectedIndex = 0;
-  List<String> pantryList = [];
+  List<String> pantryList = ["massa de lasanha",
+    "espinafres",
+    "queijo ricotta",
+    "queijo parmesão ralado",
+    "mozzarella ralada",
+    "alho picado",
+    "azeite de oliva",
+    "molho de tomate","sal","pimenta preta", "noz-moscada"];
   List<String> shoppingList = [];
   List<bool> boughtStatus = [];
-  List<Recipe> favoriteRecipeList = [];
+  List<Recipe> favoriteRecipeList = [startRecipeList[6]];
   List<Recipe> recipeList = startRecipeList;
   List<Recipe> myRecipes = [];
 

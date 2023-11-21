@@ -158,7 +158,7 @@ class SeeRecipeScreenState extends State<SeeRecipeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  widget.isInPantry(_recipe.ingredients[i].name)
+                  widget.isInPantry(_recipe.ingredients[i].name.toLowerCase())
                       ? InkWell(
                           child: const Icon(Icons.check_circle,
                               color: Colors.green),
@@ -168,7 +168,7 @@ class SeeRecipeScreenState extends State<SeeRecipeScreen> {
                               color: Colors.red, size: 35),
                           onTap: () {
                             widget
-                                .addToShoppingList(_recipe.ingredients[i].name);
+                                .addToShoppingList(_recipe.ingredients[i].name.toLowerCase());
                             showDialog(
                                 context: context,
                                 barrierDismissible: false,

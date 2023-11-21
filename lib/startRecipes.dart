@@ -159,7 +159,6 @@ List<Recipe> startRecipeList = [
       Ingredient(name: "Leite", quantity: 1, units: "chávena"),
       Ingredient(name: "Óleo vegetal", quantity: 1, units: "chávena"),
       Ingredient(name: "Baunilha", quantity: 1, units: "colher de chá"),
-      Ingredient(name: "Água quente", quantity: 1, units: "chávena"),
       Ingredient(name: "Sal", quantity: 1, units: "colher de chá"),
     ],
     steps: [
