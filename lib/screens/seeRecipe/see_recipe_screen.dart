@@ -193,7 +193,11 @@ class SeeRecipeScreenState extends State<SeeRecipeScreen> {
                             });
                       },
                     ),
-                    Text(
+                    _recipe.ingredients[i].quantity == 0
+                    ?Text(
+                          "${_recipe.ingredients[i].units} ${_recipe.ingredients[i].name}",
+                          style: TextStyle(fontSize: 20))
+                    :Text(
                         "${_recipe.ingredients[i].quantity} ${_recipe.ingredients[i].units} ${_recipe.ingredients[i].name}",
                         style: TextStyle(fontSize: 20)),
                   ],
