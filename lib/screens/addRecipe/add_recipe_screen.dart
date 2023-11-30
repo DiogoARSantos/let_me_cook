@@ -269,12 +269,6 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                                           borderRadius:
                                               BorderRadius.circular(20),
                                         )),
-                                    validator: (value) {
-                                      if (value == "" || value == "0") {
-                                        return "Introduzir";
-                                      }
-                                      return null;
-                                    },
                                   ))),
                           Expanded(
                               flex: 1,
@@ -528,6 +522,9 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
     } else {
       _formKey.currentState!.save();
       for (int i = 0; i < _ingredientsItems.length; i++) {
+        if(_ingredientsQts[i].text == ""){
+          _ingredientsQts[i].text = "0";
+        }
         Ingredient igt = Ingredient(
             name: _ingredientsItems[i].text.toLowerCase(),
             quantity: int.parse(_ingredientsQts[i].text),
