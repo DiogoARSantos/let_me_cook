@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -88,7 +90,6 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
             SizedBox(height: 20),
 
             //PORTIONS
-            /**@TODO: How to center the content of the forms */
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -101,7 +102,6 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
             SizedBox(height: 20),
 
             //DURATION
-            /**@TODO: How to center the content of the forms */
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -121,7 +121,35 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
             ),
             Align(
               alignment: Alignment(-0.9,0),
-              child: Text("Ingredientes", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+              child: Row(
+                children: [
+                  Text("Ingredientes", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                  SizedBox(width: 10),
+                  Tooltip(
+                    richMessage: WidgetSpan(
+                      alignment: PlaceholderAlignment.baseline,
+                      baseline: TextBaseline.alphabetic,
+                      child: Container(
+                        padding: EdgeInsets.all(2),
+                        constraints:
+                            const BoxConstraints(maxWidth: 280),
+                        child: Text("Qnt: Quantidade a adicionar\nUnid: Unidades de medida", 
+                          style: TextStyle(color: Colors.white, fontSize: 16)),
+                    )),
+                    triggerMode: TooltipTriggerMode.longPress,
+                    showDuration: Duration.zero,
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Icon(
+                      Icons.info_outline,
+                      size: 22,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
             ),
             
             for(int i=0; i < _ingredientsItems.length; i++)
@@ -197,7 +225,6 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                   ),
                 ],
               ),
-
             //INGREDIENT BUTTONS
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
