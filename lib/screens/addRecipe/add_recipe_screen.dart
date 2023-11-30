@@ -9,7 +9,6 @@ import 'dart:io';
 //import 'package:let_me_cook/screens/home/components/body.dart';
 
 class AddRecipeScreen extends StatefulWidget {
-
   final Function(Recipe) addRecipe;
   final Function() backToHomeScreen;
 
@@ -41,44 +40,46 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
           children: <Widget>[
             //PAGE TITLE
             SizedBox(height: 20),
-            Text('Criar Nova Receita', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold,)),
+            Text('Criar Nova Receita',
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                )),
             SizedBox(height: 20),
 
             //PICTURE
             _selectedImage == null
-              ? Container(
-                width: MediaQuery.of(context).size.width,
-                height: 200.0,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 186, 186, 186),
-                  image: DecorationImage(
-                    scale: 5,
-                    image: AssetImage("assets/images/camera.png"),
-                  ),                 
-                ),
-              )
-              : Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 200.0,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      alignment: Alignment.bottomCenter,
-                      image: FileImage(_selectedImage!),
+                ? Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 200.0,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 186, 186, 186),
+                      image: DecorationImage(
+                        scale: 5,
+                        image: AssetImage("assets/images/camera.png"),
+                      ),
+                    ),
+                  )
+                : Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 200.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        alignment: Alignment.bottomCenter,
+                        image: FileImage(_selectedImage!),
+                      ),
                     ),
                   ),
-                ),
-            MaterialButton (
+            MaterialButton(
               color: Color(0xFFBF7979),
-              child: const Text(
-                "Escolher ficheiro",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                )
-              ),
+              child: const Text("Escolher ficheiro",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  )),
               onPressed: () {
                 _pickImageFromGallery();
               },
@@ -133,7 +134,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                         padding: EdgeInsets.all(2),
                         constraints:
                             const BoxConstraints(maxWidth: 280),
-                        child: Text("Qnt: Quantidade a adicionar\nUnid: Unidades de medida", 
+                        child: Text("Qnt: Quantidade a adicionar\nUnid: Unidades de medida",
                           style: TextStyle(color: Colors.white, fontSize: 16)),
                     )),
                     triggerMode: TooltipTriggerMode.longPress,
@@ -169,62 +170,69 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(flex: 3, child: Padding(
-                        padding: EdgeInsets.all(2),
-                        child: TextFormField(
-                          controller: _ingredientsItems[i],
-                          decoration: InputDecoration(
-                            labelText: 'Ingrediente', 
-                            border: OutlineInputBorder( borderRadius: BorderRadius.circular(20),)
-                          ),
-                          validator: (value) {
-                            if(value == "" ){
-                              return "Introduzir";
-                            }
-                            return null;
-                          },
-                        )
-                      )),
-                      Expanded(flex: 1, child: Padding(
-                        padding: EdgeInsets.all(2),
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(3),
-                          ],
-                          controller: _ingredientsQts[i],
-                          decoration: InputDecoration(
-                            labelText: 'Qnt', 
-                            border: OutlineInputBorder( borderRadius: BorderRadius.circular(20),)
-                          ),
-                          validator: (value) {
-                            if(value == "" || value == "0"){
-                              return "Introduzir";
-                            }
-                            return null;
-                          },
-                        )
-                      )),
-                      Expanded(flex: 1, child: Padding(
-                        padding: EdgeInsets.all(2),
-                        child: TextFormField(
-                          controller: _ingredientsUnits[i],
-                          decoration: InputDecoration(
-                            labelText: 'Unid', 
-                            border: OutlineInputBorder( borderRadius: BorderRadius.circular(20),)
-                          ),
-                          validator: (value) {
-                            if(value == "" || value == "0"){
-                              return "Introduzir";
-                            }
-                            return null;
-                          },
-                        )
-                      )),
+                      Expanded(
+                          flex: 3,
+                          child: Padding(
+                              padding: EdgeInsets.all(2),
+                              child: TextFormField(
+                                controller: _ingredientsItems[i],
+                                decoration: InputDecoration(
+                                    labelText: 'Ingrediente',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    )),
+                                validator: (value) {
+                                  if (value == "") {
+                                    return "Introduzir";
+                                  }
+                                  return null;
+                                },
+                              ))),
+                      Expanded(
+                          flex: 1,
+                          child: Padding(
+                              padding: EdgeInsets.all(2),
+                              child: TextFormField(
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(3),
+                                ],
+                                controller: _ingredientsQts[i],
+                                decoration: InputDecoration(
+                                    labelText: 'Qnt',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    )),
+                                validator: (value) {
+                                  if (value == "" || value == "0") {
+                                    return "Introduzir";
+                                  }
+                                  return null;
+                                },
+                              ))),
+                      Expanded(
+                          flex: 1,
+                          child: Padding(
+                              padding: EdgeInsets.all(2),
+                              child: TextFormField(
+                                controller: _ingredientsUnits[i],
+                                decoration: InputDecoration(
+                                    labelText: 'Unid',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    )),
+                                validator: (value) {
+                                  if (value == "" || value == "0") {
+                                    return "Introduzir";
+                                  }
+                                  return null;
+                                },
+                              ))),
                     ],
                   ),
                 ],
               ),
+
             //INGREDIENT BUTTONS
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -241,7 +249,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                 ),
                 ElevatedButton.icon(
                   icon: const Icon(Icons.disabled_by_default_outlined),
-                  label: const Text('Limpar'),
+                  label: const Text('Limpar Tudo'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
                   ),
@@ -263,44 +271,41 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
               child: Text("Passos", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
             ),
 
-            for(int i=0; i < _stepsItems.length; i++)
-              Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      InkWell(
-                        child: const Icon(Icons.delete_outline),
-                        onTap: () {
-                          _removeStepField(i);
-                        },
-                      )
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(flex: 3, child: Padding(
-                        padding: EdgeInsets.all(2),
-                        child: TextFormField(
-                          maxLines: 10,
-                          controller: _stepsItems[i],
-                          decoration: InputDecoration(
-                            labelText: 'Passo', 
-                            border: OutlineInputBorder( borderRadius: BorderRadius.circular(20),)
-                          ),
-                          validator: (value) {
-                            if(value == "" ){
-                              return "Introduzir";
-                            }
-                            return null;
-                          },
-                        )
-                      )),
-                    ]
-                  ),
-                ]
-              ),
+            for (int i = 0; i < _stepsItems.length; i++)
+              Column(children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    InkWell(
+                      child: const Icon(Icons.delete_outline),
+                      onTap: () {
+                        _removeStepField(i);
+                      },
+                    )
+                  ],
+                ),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Expanded(
+                      flex: 3,
+                      child: Padding(
+                          padding: EdgeInsets.all(2),
+                          child: TextFormField(
+                            maxLines: 10,
+                            controller: _stepsItems[i],
+                            decoration: InputDecoration(
+                                labelText: 'Passo',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                )),
+                            validator: (value) {
+                              if (value == "") {
+                                return "Introduzir";
+                              }
+                              return null;
+                            },
+                          ))),
+                ]),
+              ]),
 
             //STEP BUTTONS
             Row(
@@ -318,7 +323,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                 ),
                 ElevatedButton.icon(
                   icon: const Icon(Icons.disabled_by_default_outlined),
-                  label: const Text('Limpar'),
+                  label: const Text('Limpar Tudo'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
                   ),
@@ -366,7 +371,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
           return 'Por favor introduza o título';
         }
         return null;
-        },
+      },
       onSaved: (value) {
         _title = value!;
       },
@@ -439,7 +444,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
     });
   }
 
-    _addStepField() {
+  _addStepField() {
     setState(() {
       _stepsItems.add(TextEditingController());
     });
@@ -485,8 +490,13 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
       for(int i=0; i < _stepsItems.length; i++) {
         _steps.add(_stepsItems[i].text);
       }
-      Recipe recipe = Recipe(picture: _selectedImage, title: _title, portions: _portions, 
-      duration: _duration, ingredients: _ingredients, steps: _steps);
+      Recipe recipe = Recipe(
+          picture: _selectedImage,
+          title: _title,
+          portions: _portions,
+          duration: _duration,
+          ingredients: _ingredients,
+          steps: _steps);
       widget.addRecipe(recipe);
       widget.backToHomeScreen();
     }
