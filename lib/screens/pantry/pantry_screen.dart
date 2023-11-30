@@ -35,6 +35,7 @@ class _PantryScreenState extends State<PantryScreen> {
         pantryList.add(ingredient);
       }
       displayedIngredients = filterByPantry();
+      filterIngredients(searchController.value.text);
     });
   }
 
@@ -139,6 +140,7 @@ class _PantryScreenState extends State<PantryScreen> {
                       showInPantry = false;
                       showNotInPantry = false;
                       displayedIngredients = filterByPantry();
+                      filterIngredients(searchController.value.text);
                     });
                   },
                 ),
@@ -151,6 +153,7 @@ class _PantryScreenState extends State<PantryScreen> {
                       showInPantry = true;
                       showNotInPantry = false;
                       displayedIngredients = filterByPantry();
+                      filterIngredients(searchController.value.text);
                     });
                   },
                 ),
@@ -163,6 +166,7 @@ class _PantryScreenState extends State<PantryScreen> {
                       showInPantry = false;
                       showNotInPantry = true;
                       displayedIngredients = filterByPantry();
+                      filterIngredients(searchController.value.text);
                     });
                   },
                 ),
