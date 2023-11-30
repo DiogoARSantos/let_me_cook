@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../main.dart';
@@ -6,36 +5,39 @@ import '../../models/Recipe.dart';
 import 'package:let_me_cook/screens/home/widgets/RecipeCard.dart';
 
 class ProfileScreen extends StatefulWidget {
-  List<Recipe> recipeList = [];
-  List<Recipe> favoriteRecipeList = [];
+  final List<Recipe> recipeList;
+  final List<Recipe> favoriteRecipeList;
   final Function(String) addToShoppingList;
   final Function(Recipe) isInFavorites;
   final Function(String) isInPantry;
   final Function(Recipe) addToFavoriteList;
   final Function(Recipe) removeFromFavorite;
-  ProfileScreen({required this.recipeList, required this.favoriteRecipeList,
-    required this.addToShoppingList,
-    required this.isInPantry,
-    required this.addToFavoriteList,
-    required this.isInFavorites,
-    required this.removeFromFavorite});
 
+  ProfileScreen(
+      {required this.recipeList,
+        required this.favoriteRecipeList,
+        required this.addToShoppingList,
+        required this.isInPantry,
+        required this.addToFavoriteList,
+        required this.isInFavorites,
+        required this.removeFromFavorite});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState(title: 'Profile');
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 bool _displayFavorites = false;
 
 class MyAppState2 extends ChangeNotifier {
   ProfileScreen profileScreen;
+
   MyAppState2(this.profileScreen);
 
   List<Recipe> get displayedRecipes {
-    if (_displayFavorites == false) {
-      return profileScreen.recipeList;
-    } else {
+    if (_displayFavorites) {
       return profileScreen.favoriteRecipeList;
+    } else {
+      return profileScreen.recipeList;
     }
   }
 
@@ -46,9 +48,6 @@ class MyAppState2 extends ChangeNotifier {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final String title;
-
-  _ProfileScreenState({Key? key, required this.title});
   TextEditingController _searchController = TextEditingController();
 
   List<Recipe> filteredRecipes = [];
@@ -57,7 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     _searchController.addListener(_onSearchChanged);
-    filteredRecipes = List.from(widget.recipeList);
+    filteredRecipes = widget.recipeList;
   }
 
   @override
@@ -92,47 +91,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var appState = context.watch<MyAppState>();
     var name = appState.name;
     return ChangeNotifierProvider(
-      create: (context) => MyAppState2(this.widget),
+      create: (context) => MyAppState2(widget),
       child: Consumer<MyAppState2>(
         builder: (context, appState2, child) {
           Widget buildHeader() {
             return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(height: 70),
+                SizedBox(height: 20),
                 CircleAvatar(
                   radius: 50,
                   backgroundImage: AssetImage('caminho_para_a_sua_imagem'),
                 ),
                 SizedBox(height: 10),
                 Text(
-                  '$name',
+                  name,
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 30),
+                SizedBox(height: 20),
               ],
             );
           }
 
           Widget buildButtons() {
             return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      print('button pressed!');
                       appState2.toggleDisplayFavorites();
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: _displayFavorites
-                          ? Colors.transparent
-                          : const Color.fromARGB(255, 175, 76, 76),
+                      backgroundColor: _displayFavorites
+                          ? Colors.grey.shade300
+                          : Color(0xFFBF7979),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
+                      elevation: _displayFavorites ? 0 : 8,
                     ),
-                    child: Text('As minhas receitas'),
+                    child: Text('As minhas receitas',
+                        style: TextStyle(
+                          color:
+                          _displayFavorites ? Colors.black : Colors.white,
+                        )),
                   ),
                 ),
                 Expanded(
@@ -142,14 +143,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       appState2.toggleDisplayFavorites();
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: _displayFavorites
-                          ? const Color.fromARGB(255, 175, 76, 76)
-                          : Colors.transparent,
+                      backgroundColor: _displayFavorites
+                          ? Color(0xFFBF7979)
+                          : Colors.grey.shade300,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
+                      elevation: _displayFavorites ? 8 : 0,
                     ),
-                    child: Text('Favoritos'),
+                    child: Text(
+                      'Favoritas',
+                      style: TextStyle(
+                        color: _displayFavorites ? Colors.white : Colors.black,
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -164,9 +171,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   _onSearchChanged();
                 },
                 decoration: InputDecoration(
-                  hintText: 'Pesquisar...',
+                  hintText: 'Procurar receita...',
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Color(0xFFBF7979),
+                    size: 40,
+                  ),
                   border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black, width: 1.0),
+                    borderSide: BorderSide(color: Color(0xFFBF7979)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Color(0xFFBF7979)),
                   ),
                   contentPadding:
                   EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
@@ -180,7 +196,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: ListView.builder(
                 itemCount: appState2.displayedRecipes.length,
                 itemBuilder: (context, index) {
-                  return RecipeCard(recipe: appState2.displayedRecipes[index], addToShoppingList: widget.addToShoppingList,
+                  return RecipeCard(
+                      recipe: appState2.displayedRecipes[index],
+                      addToShoppingList: widget.addToShoppingList,
                       isInPantry: widget.isInPantry,
                       addToFavoriteList: widget.addToFavoriteList,
                       isInFavorites: widget.isInFavorites,

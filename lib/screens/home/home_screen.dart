@@ -92,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           focusedBorder: OutlineInputBorder(
             borderSide:
-                BorderSide(color: Color(0xFFBF7979)), // Set transparent color
+                BorderSide(color: Color(0xFFBF7979)),
           ),
           contentPadding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
         ),

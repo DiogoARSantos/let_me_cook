@@ -59,7 +59,7 @@ class _PantryScreenState extends State<PantryScreen> {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: isActive ? Colors.blue : Colors.grey.shade300,
+        backgroundColor: isActive ? Color(0xFFBF7979) : Colors.grey.shade300,
         elevation: isActive ? 8 : 0,
       ),
       child: Text(

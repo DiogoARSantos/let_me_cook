@@ -37,61 +37,59 @@ class SeeRecipeScreenState extends State<SeeRecipeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0.0,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black87,
+            size: 40,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              widget.isInFavorites(_recipe)
+                  ? Icons.favorite
+                  : Icons.favorite_border_outlined,
+              size: 50,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              if (widget.isInFavorites(_recipe)) {
+                widget.removeFromFavorite(_recipe);
+              } else {
+                widget.addToFavoriteList(_recipe);
+                showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) {
+                      Future.delayed(Duration(seconds: 1), () {
+                        Navigator.of(context).pop(true);
+                      });
+                      return AlertDialog(
+                        backgroundColor: Color(0xFFBF7979),
+                        title: Text(
+                          'Adicionada aos Favoritos',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      );
+                    });
+              }
+            },
+          ),
+          SizedBox(width: 20),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(children: [
           Column(
             children: <Widget>[
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.arrow_back,
-                    size: 35,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                InkWell(
-                  child: heart = widget.isInFavorites(_recipe)
-                      ? Icon(Icons.favorite, size: 50)
-                      : Icon(Icons.favorite_border_outlined, size: 50),
-                  onTap: () {
-                    if (widget.isInFavorites(_recipe)) {
-                      print(widget.isInFavorites(_recipe));
-                      widget.removeFromFavorite(_recipe);
-                      print(widget.isInFavorites(_recipe));
-                      setState(() {
-                        heart = Icon(Icons.favorite_border, size: 50);
-                      });
-                    } else {
-                      print(!widget.isInFavorites(_recipe));
-                      widget.addToFavoriteList(_recipe);
-                      print(widget.isInFavorites(_recipe));
-                      setState(() {
-                        heart = Icon(Icons.favorite, size: 50);
-                      });
-                      showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (context) {
-                            Future.delayed(Duration(seconds: 1), () {
-                              Navigator.of(context).pop(true);
-                            });
-                            return AlertDialog(
-                              backgroundColor: Color(0xFFBF7979),
-                              title: Text(
-                                'Adicionada aos Favoritos',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            );
-                          });
-                    }
-                  },
-                ),
-              ]),
-
               //Picture
               _recipe.picture == null
                   ? Container(

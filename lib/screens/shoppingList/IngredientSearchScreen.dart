@@ -5,7 +5,8 @@ class IngredientSearchScreen extends StatefulWidget {
   final List<String> shoppingList;
   final List<bool> boughtStatus;
 
-  IngredientSearchScreen({required this.shoppingList, required this.boughtStatus});
+  IngredientSearchScreen(
+      {required this.shoppingList, required this.boughtStatus});
 
   @override
   State<IngredientSearchScreen> createState() => _IngredientSearchScreenState();
@@ -32,8 +33,9 @@ class _IngredientSearchScreenState extends State<IngredientSearchScreen> {
   void _onSearchChanged() {
     setState(() {
       filteredIngredients = allIngredients
-          .where((ingredient) =>
-          ingredient.toLowerCase().contains(_searchController.text.toLowerCase()))
+          .where((ingredient) => ingredient
+              .toLowerCase()
+              .contains(_searchController.text.toLowerCase()))
           .toList();
     });
   }
@@ -43,6 +45,17 @@ class _IngredientSearchScreenState extends State<IngredientSearchScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Adicionar Ingrediente'),
+        elevation: 0.0,
+        leading: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back,
+            color: Colors.black87,
+            size: 40,
+          ),
+        ),
       ),
       body: Column(
         children: [
@@ -52,8 +65,16 @@ class _IngredientSearchScreenState extends State<IngredientSearchScreen> {
               controller: _searchController,
               decoration: InputDecoration(
                 hintText: 'Procurar ingredientes...',
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Color(0xFFBF7979),
+                  size: 40,
+                ),
                 border: OutlineInputBorder(),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFFBF7979)),
+                ),
+                contentPadding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
               ),
               onChanged: (value) {
                 _onSearchChanged();
@@ -68,8 +89,8 @@ class _IngredientSearchScreenState extends State<IngredientSearchScreen> {
                   title: Text(filteredIngredients[index]),
                   onTap: () {
                     setState(() {
-                      print("Ingrediente a adicionar: ${filteredIngredients[index]}");
-                      if (!widget.shoppingList.contains(filteredIngredients[index])) {
+                      if (!widget.shoppingList
+                          .contains(filteredIngredients[index])) {
                         widget.shoppingList.add(filteredIngredients[index]);
                         widget.boughtStatus.add(false);
                       }

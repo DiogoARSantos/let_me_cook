@@ -93,7 +93,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                     border: OutlineInputBorder(),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                          color: Color(0xFFBF7979)), // Set transparent color
+                          color: Color(0xFFBF7979)),
                     ),
                     contentPadding:
                     EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
