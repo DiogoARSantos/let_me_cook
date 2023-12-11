@@ -67,7 +67,7 @@ class SeeRecipeScreenState extends State<SeeRecipeScreen> {
                     context: context,
                     barrierDismissible: false,
                     builder: (context) {
-                      Future.delayed(Duration(seconds: 1), () {
+                      Future.delayed(Duration(seconds: 1, milliseconds: 500), () {
                         Navigator.of(context).pop(true);
                       });
                       return AlertDialog(

@@ -4,7 +4,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:let_me_cook/models/Recipe.dart';
 import 'package:let_me_cook/models/Ingredient.dart';
 import 'dart:io';
-//import 'package:let_me_cook/screens/home/components/body.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+
+import '../../allIngredients.dart';
 
 class AddRecipeScreen extends StatefulWidget {
   final Function(Recipe) addRecipe;
@@ -54,28 +56,28 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                 //PICTURE
                 _selectedImage == null
                     ? Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 200.0,
-                        decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 186, 186, 186),
-                          image: DecorationImage(
-                            scale: 5,
-                            image: AssetImage("assets/images/camera.png"),
-                          ),
-                        ),
-                      )
+                  width: MediaQuery.of(context).size.width,
+                  height: 200.0,
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 186, 186, 186),
+                    image: DecorationImage(
+                      scale: 5,
+                      image: AssetImage("assets/images/camera.png"),
+                    ),
+                  ),
+                )
                     : Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 200.0,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            alignment: Alignment.bottomCenter,
-                            image: FileImage(_selectedImage!),
-                          ),
-                        ),
-                      ),
+                  width: MediaQuery.of(context).size.width,
+                  height: 200.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      alignment: Alignment.bottomCenter,
+                      image: FileImage(_selectedImage!),
+                    ),
+                  ),
+                ),
                 MaterialButton(
                   color: Color(0xFFBF7979),
                   child: const Text("Escolher ficheiro",
@@ -191,7 +193,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                       SizedBox(width: 10),
                       Tooltip(
                         richMessage: WidgetSpan(
-                            alignment: PlaceholderAlignment.baseline,
+                            alignment: PlaceholderAlignment.top,
                             baseline: TextBaseline.alphabetic,
                             child: Container(
                               padding: EdgeInsets.all(2),
@@ -201,8 +203,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 16)),
                             )),
-                        triggerMode: TooltipTriggerMode.longPress,
-                        showDuration: Duration.zero,
+                        triggerMode: TooltipTriggerMode.tap,
                         decoration: BoxDecoration(
                           color: Colors.grey,
                           borderRadius: BorderRadius.circular(10.0),
@@ -235,41 +236,27 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
-                              flex: 3,
-                              child: Padding(
-                                  padding: EdgeInsets.all(2),
-                                  child: TextFormField(
-                                    controller: _ingredientsItems[i],
-                                    decoration: InputDecoration(
-                                        labelText: 'Ingrediente',
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        )),
-                                    validator: (value) {
-                                      if (value == "") {
-                                        return "Introduzir";
-                                      }
-                                      return null;
-                                    },
-                                  ))),
+                            flex: 3,
+                            child: _buildIngredientField(i),
+                          ),
                           Expanded(
-                              flex: 1,
-                              child: Padding(
-                                  padding: EdgeInsets.all(2),
-                                  child: TextFormField(
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: [
-                                      LengthLimitingTextInputFormatter(3),
-                                    ],
-                                    controller: _ingredientsQts[i],
-                                    decoration: InputDecoration(
-                                        labelText: 'Qnt',
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        )),
-                                  ))),
+                            flex: 1,
+                            child: Padding(
+                              padding: EdgeInsets.all(2),
+                              child: TextFormField(
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(3),
+                                ],
+                                controller: _ingredientsQts[i],
+                                decoration: InputDecoration(
+                                    labelText: 'Qnt',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    )),
+                              ),
+                            ),
+                          ),
                           Expanded(
                               flex: 1,
                               child: Padding(
@@ -280,11 +267,11 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                                         labelText: 'Unid',
                                         border: OutlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(20),
+                                          BorderRadius.circular(20),
                                         )),
                                     validator: (value) {
                                       if (value == "" || value == "0") {
-                                        return "Introduzir";
+                                        return "Selecione o ingrediente";
                                       }
                                       return null;
                                     },
@@ -331,7 +318,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                   alignment: Alignment(-0.9, 0),
                   child: Text("Passos",
                       style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                      TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
                 ),
 
                 for (int i = 0; i < _stepsItems.length; i++)
@@ -362,7 +349,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                                     )),
                                 validator: (value) {
                                   if (value == "") {
-                                    return "Introduzir";
+                                    return "Introduzir passo";
                                   }
                                   return null;
                                 },
@@ -402,7 +389,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                   onPressed: _createRecipe,
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
-                        Colors.green, // Set your desired background color here
+                    Colors.green, // Set your desired background color here
                   ),
                   child: Text('Criar Receita'),
                 ),
@@ -432,10 +419,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
         Text(
           "Título da Receita",
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
         SizedBox(height: 8),
         TextFormField(
@@ -454,6 +438,53 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
           },
         ),
       ],
+    );
+  }
+
+  Widget _buildIngredientField(int index) {
+    var number = index + 1;
+    return DropdownSearch<String>(
+      popupProps: PopupProps.menu(
+        showSearchBox: true,
+        showSelectedItems: true,
+        searchFieldProps: TextFieldProps(
+          decoration: InputDecoration(
+            hintText: "Pesquisar ingrediente...",
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+        ),
+        emptyBuilder: (context, searchEntry) {
+          return Center(
+            child: Text(
+              'Nenhum ingrediente encontrado',
+              style: TextStyle(
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          );
+        },
+      ),
+      items: allIngredients,
+      dropdownDecoratorProps: DropDownDecoratorProps(
+        dropdownSearchDecoration: InputDecoration(
+          labelText: 'Ingrediente $number',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
+      ),
+      onChanged: (String? selectedIngredient) {
+        _ingredientsItems[index].text = selectedIngredient ?? '';
+      },
+      selectedItem: _ingredientsItems[index].text,
+      validator: (String? value) {
+        if (value == null || value.isEmpty) {
+          return 'Introduzir ingrediente';
+        }
+        return null;
+      },
     );
   }
 
@@ -522,7 +553,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
     } else {
       _formKey.currentState!.save();
       for (int i = 0; i < _ingredientsItems.length; i++) {
-        if(_ingredientsQts[i].text == ""){
+        if (_ingredientsQts[i].text == "") {
           _ingredientsQts[i].text = "0";
         }
         Ingredient igt = Ingredient(
@@ -543,6 +574,31 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
           steps: _steps);
       widget.addRecipe(recipe);
       widget.backToHomeScreen();
+      _showSuccessPopup();
     }
+  }
+
+  void _showSuccessPopup() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        Future.delayed(Duration(seconds: 2), () {
+          Navigator.of(context).pop(true);
+        });
+        return AlertDialog(
+          title: Text(
+            'Sucesso!',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white),
+          ),
+          content: Text(
+            'Receita criada com sucesso.',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Color(0xFFBF7979),
+        );
+      },
+    );
   }
 }

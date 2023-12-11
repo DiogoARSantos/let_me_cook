@@ -50,7 +50,7 @@ final List<String> allIngredients = [
   "ovos",
   "chalotas",
   "cebolinho",
-  "natas"
+  "natas",
   "pão",
   "queijo",
   "repolho",
@@ -71,8 +71,8 @@ final List<String> allIngredients = [
   "batata-doce",
   "beterraba",
   "cacau em pó",
-  "caldo de legumes"
-  "fermento em pó"
+  "caldo de legumes",
+  "fermento em pó",
   "caju",
   "cebola-roxa",
   "queijo cheddar",
@@ -80,14 +80,14 @@ final List<String> allIngredients = [
   "chouriço",
   "couve-flor",
   "croutons",
-  "cominho em pó"
-  "creme de leite"
+  "cominho em pó",
+  "creme de leite",
   "damasco",
   "espargos",
   "esparguete",
   "espinafres",
   "farinha",
-  "farinha de trigo"
+  "farinha de trigo",
   "feijão",
   "frango inteiro",
   "gema",
@@ -114,5 +114,5 @@ final List<String> allIngredients = [
   "molho caesar",
   "paprika",
   "passas",
-  "bicarbonato de sódio"
+  "bicarbonato de sódio",
 ];
