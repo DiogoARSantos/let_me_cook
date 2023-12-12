@@ -271,7 +271,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                                         )),
                                     validator: (value) {
                                       if (value == "" || value == "0") {
-                                        return "Selecione o ingrediente";
+                                        return "Introduzir";
                                       }
                                       return null;
                                     },
