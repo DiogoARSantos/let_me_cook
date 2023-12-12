@@ -429,7 +429,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
               )),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Por favor introduza o título';
+              return 'Introduzir o título';
             }
             return null;
           },
@@ -488,6 +488,81 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
     );
   }
 
+  _removeAllIngredientFields() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Color(0xFFBF7979),
+          title: Text('Limpar todos os ingredientes',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white)),
+          content: Text(
+              'Tem a certeza que deseja limpar todos os ingredientes?',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white)),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancelar', style: TextStyle(color: Colors.white)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Confirmar',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold)),
+              onPressed: () {
+                setState(() {
+                  _ingredientsItems.clear();
+                  _ingredientsQts.clear();
+                  _ingredientsUnits.clear();
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  _removeAllStepFields() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Color(0xFFBF7979),
+          title: Text('Limpar todos os passos',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white)),
+          content: Text('Tem a certeza que deseja limpar todos os passos?',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white)),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancelar', style: TextStyle(color: Colors.white)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Confirmar',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold)),
+              onPressed: () {
+                setState(() {
+                  _stepsItems.clear();
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   _addIngredientField() {
     setState(() {
       _ingredientsItems.add(TextEditingController());
@@ -504,14 +579,6 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
     });
   }
 
-  _removeAllIngredientFields() {
-    setState(() {
-      _ingredientsItems.clear();
-      _ingredientsQts.clear();
-      _ingredientsUnits.clear();
-    });
-  }
-
   _addStepField() {
     setState(() {
       _stepsItems.add(TextEditingController());
@@ -521,12 +588,6 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
   _removeStepField(i) {
     setState(() {
       _stepsItems.removeAt(i);
-    });
-  }
-
-  _removeAllStepFields() {
-    setState(() {
-      _stepsItems.clear();
     });
   }
 
@@ -557,7 +618,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
           _ingredientsQts[i].text = "0";
         }
         Ingredient igt = Ingredient(
-            name: _ingredientsItems[i].text.toLowerCase(),
+            name: capitalizeFirst(_ingredientsItems[i].text.toLowerCase()),
             quantity: int.parse(_ingredientsQts[i].text),
             units: _ingredientsUnits[i].text);
         _ingredients.add(igt);
@@ -576,6 +637,13 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
       widget.backToHomeScreen();
       _showSuccessPopup();
     }
+  }
+
+  String capitalizeFirst(String text) {
+    if (text.isEmpty) {
+      return '';
+    }
+    return text[0].toUpperCase() + text.substring(1);
   }
 
   void _showSuccessPopup() {

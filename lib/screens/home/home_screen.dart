@@ -5,18 +5,18 @@ import '../../models/Recipe.dart';
 
 class HomeScreen extends StatefulWidget {
   final List<Recipe> recipeList;
-  final Function(String) addToShoppingList;
-  final Function(Recipe) isInFavorites;
-  final Function(String) isInPantry;
-  final Function(Recipe) addToFavoriteList;
-  final Function(Recipe) removeFromFavorite;
+  final List<String> shoppingList;
+  final List<String> pantryList;
+  final List<Recipe> favoriteList;
+  final List<bool> boughtStatus;
 
-  HomeScreen({required this.recipeList,required
-    this.addToShoppingList,
-    required this.isInPantry,
-    required this.addToFavoriteList,
-    required this.isInFavorites,
-    required this.removeFromFavorite});
+  HomeScreen({
+    required this.recipeList,
+    required this.shoppingList,
+    required this.pantryList,
+    required this.favoriteList,
+    required this.boughtStatus,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -45,8 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       filteredRecipes = widget.recipeList
           .where((recipe) => recipe.title
-              .toLowerCase()
-              .contains(_searchController.text.toLowerCase()))
+          .toLowerCase()
+          .contains(_searchController.text.toLowerCase()))
           .toList();
     });
   }
@@ -91,8 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
             borderSide: BorderSide(color: Color(0xFFBF7979)),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide:
-                BorderSide(color: Color(0xFFBF7979)),
+            borderSide: BorderSide(color: Color(0xFFBF7979)),
           ),
           contentPadding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
         ),
@@ -105,12 +104,12 @@ class _HomeScreenState extends State<HomeScreen> {
       child: ListView.builder(
         itemCount: filteredRecipes.length,
         itemBuilder: (context, index) {
-          return RecipeCard(recipe: filteredRecipes[index],
-              addToShoppingList: widget.addToShoppingList,
-              isInPantry: widget.isInPantry,
-              addToFavoriteList: widget.addToFavoriteList,
-              isInFavorites: widget.isInFavorites,
-              removeFromFavorite: widget.removeFromFavorite);
+          return RecipeCard(
+              recipe: filteredRecipes[index],
+              shoppingList: widget.shoppingList,
+              pantryList: widget.pantryList,
+              favoriteList: widget.favoriteList,
+              boughtStatus: widget.boughtStatus);
         },
       ),
     );

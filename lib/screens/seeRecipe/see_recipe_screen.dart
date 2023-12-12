@@ -6,19 +6,17 @@ import 'package:let_me_cook/models/Ingredient.dart';
 
 class SeeRecipeScreen extends StatefulWidget {
   final Recipe recipe;
-  final Function(String) addToShoppingList;
-  final Function(String) isInPantry;
-  final Function(Recipe) addToFavoriteList;
-  final Function(Recipe) isInFavorites;
-  final Function(Recipe) removeFromFavorite;
+  final List<String> shoppingList;
+  final List<String> pantryList;
+  final List<Recipe> favoriteList;
+  final List<bool> boughtStatus;
 
   SeeRecipeScreen(
       {required this.recipe,
-        required this.addToShoppingList,
-        required this.isInPantry,
-        required this.addToFavoriteList,
-        required this.isInFavorites,
-        required this.removeFromFavorite});
+        required this.shoppingList,
+        required this.pantryList,
+        required this.favoriteList,
+        required this.boughtStatus});
 
   @override
   State<SeeRecipeScreen> createState() => SeeRecipeScreenState();
@@ -52,24 +50,29 @@ class SeeRecipeScreenState extends State<SeeRecipeScreen> {
         actions: [
           IconButton(
             icon: Icon(
-              widget.isInFavorites(_recipe)
+              widget.favoriteList.contains(_recipe)
                   ? Icons.favorite
                   : Icons.favorite_border_outlined,
               size: 50,
               color: Colors.black,
             ),
             onPressed: () {
-              if (widget.isInFavorites(_recipe)) {
-                widget.removeFromFavorite(_recipe);
+              if (widget.favoriteList.contains(_recipe)) {
+                setState(() {
+                  widget.favoriteList.remove(_recipe);
+                });
               } else {
-                widget.addToFavoriteList(_recipe);
+                setState(() {
+                  widget.favoriteList.add(_recipe);
+                });
                 showDialog(
                     context: context,
                     barrierDismissible: false,
                     builder: (context) {
-                      Future.delayed(Duration(seconds: 1, milliseconds: 500), () {
-                        Navigator.of(context).pop(true);
-                      });
+                      Future.delayed(Duration(seconds: 1, milliseconds: 500),
+                              () {
+                            Navigator.of(context).pop(true);
+                          });
                       return AlertDialog(
                         backgroundColor: Color(0xFFBF7979),
                         title: Text(
@@ -164,40 +167,51 @@ class SeeRecipeScreenState extends State<SeeRecipeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    widget.isInPantry(_recipe.ingredients[i].name.toLowerCase())
+                    widget.pantryList
+                        .contains(_recipe.ingredients[i].name.toLowerCase())
                         ? InkWell(
                       child: const Icon(Icons.check_circle,
                           color: Colors.green),
                     )
                         : InkWell(
-                      child: const Icon(Icons.shopping_cart,
-                          color: Colors.red, size: 35),
+                      child: !widget.shoppingList.contains(
+                          _recipe.ingredients[i].name.toLowerCase())
+                          ? const Icon(Icons.shopping_cart,
+                          color: Colors.red, size: 35)
+                          : const Icon(Icons.shopping_cart,
+                          color: Colors.green, size: 35),
                       onTap: () {
-                        widget.addToShoppingList(
-                            _recipe.ingredients[i].name.toLowerCase());
-                        showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (context) {
-                              Future.delayed(Duration(seconds: 1), () {
-                                Navigator.of(context).pop(true);
+                        String ingredient =
+                        _recipe.ingredients[i].name.toLowerCase();
+                        if (!widget.shoppingList.contains(ingredient)) {
+                          setState(() {
+                            widget.shoppingList.add(ingredient);
+                            widget.boughtStatus.add(false);
+                          });
+                          showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (context) {
+                                Future.delayed(Duration(seconds: 1), () {
+                                  Navigator.of(context).pop(true);
+                                });
+                                return AlertDialog(
+                                  backgroundColor: Color(0xFFBF7979),
+                                  title: Text(
+                                    'Adicionado à Lista de Compras',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                );
                               });
-                              return AlertDialog(
-                                backgroundColor: Color(0xFFBF7979),
-                                title: Text(
-                                  'Adicionado à Lista de Compras',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              );
-                            });
+                        }
                       },
                     ),
                     _recipe.ingredients[i].quantity == 0
-                    ?Text(
-                          "${_recipe.ingredients[i].units} ${_recipe.ingredients[i].name}",
-                          style: TextStyle(fontSize: 20))
-                    :Text(
+                        ? Text(
+                        "${_recipe.ingredients[i].units} ${_recipe.ingredients[i].name}",
+                        style: TextStyle(fontSize: 20))
+                        : Text(
                         "${_recipe.ingredients[i].quantity} ${_recipe.ingredients[i].units} ${_recipe.ingredients[i].name}",
                         style: TextStyle(fontSize: 20)),
                   ],

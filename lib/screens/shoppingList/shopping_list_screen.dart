@@ -5,12 +5,12 @@ import 'IngredientSearchScreen.dart';
 class ShoppingListScreen extends StatefulWidget {
   final List<String> shoppingList;
   final List<bool> boughtStatus;
-  final Function(String) addToPantry;
+  final List<String> pantryList;
 
   ShoppingListScreen(
       {required this.shoppingList,
         required this.boughtStatus,
-        required this.addToPantry});
+        required this.pantryList});
 
   @override
   State<ShoppingListScreen> createState() => _ShoppingListScreenState();
@@ -23,7 +23,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
   List<String> filteredIngredients = [];
   List<bool> boughtStatus = [];
   List<String> displayedShoppingList = [];
-  late Function(String) addToPantry;
+  List<String> pantryList = [];
 
   @override
   void initState() {
@@ -31,7 +31,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
     shoppingList = widget.shoppingList;
     boughtStatus = widget.boughtStatus;
     displayedShoppingList = shoppingList;
-    addToPantry = widget.addToPantry;
+    pantryList = widget.pantryList;
   }
 
   void _onSearchChanged(String query) {
@@ -124,7 +124,11 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                             boughtStatus[index] = value ?? false;
                           });
                           if (value == true) {
-                            addToPantry(displayedShoppingList[index]);
+                            if (!pantryList.contains(displayedShoppingList[index])) {
+                              setState(() {
+                                pantryList.add(displayedShoppingList[index]);
+                              });
+                            }
                           }
                         },
                       ),

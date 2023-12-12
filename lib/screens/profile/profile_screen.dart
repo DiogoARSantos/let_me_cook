@@ -7,20 +7,17 @@ import 'package:let_me_cook/screens/home/widgets/RecipeCard.dart';
 class ProfileScreen extends StatefulWidget {
   final List<Recipe> recipeList;
   final List<Recipe> favoriteRecipeList;
-  final Function(String) addToShoppingList;
-  final Function(Recipe) isInFavorites;
-  final Function(String) isInPantry;
-  final Function(Recipe) addToFavoriteList;
-  final Function(Recipe) removeFromFavorite;
+  final List<String> pantryList;
+  final List<String> shoppingList;
+  final List<bool> boughtStatus;
 
-  ProfileScreen(
-      {required this.recipeList,
-        required this.favoriteRecipeList,
-        required this.addToShoppingList,
-        required this.isInPantry,
-        required this.addToFavoriteList,
-        required this.isInFavorites,
-        required this.removeFromFavorite});
+  ProfileScreen({
+    required this.recipeList,
+    required this.favoriteRecipeList,
+    required this.pantryList,
+    required this.shoppingList,
+    required this.boughtStatus,
+  });
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -71,16 +68,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
       setState(() {
         filteredRecipes = widget.recipeList
             .where((recipe) => recipe.title
-            .toLowerCase()
-            .contains(_searchController.text.toLowerCase()))
+                .toLowerCase()
+                .contains(_searchController.text.toLowerCase()))
             .toList();
       });
     } else {
       setState(() {
         filteredRecipes = widget.favoriteRecipeList
             .where((recipe) => recipe.title
-            .toLowerCase()
-            .contains(_searchController.text.toLowerCase()))
+                .toLowerCase()
+                .contains(_searchController.text.toLowerCase()))
             .toList();
       });
     }
@@ -100,7 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(height: 20),
                 CircleAvatar(
                   radius: 50,
-                  backgroundImage: AssetImage('caminho_para_a_sua_imagem'),
+                  backgroundImage: AssetImage("assets/images/FinalLogo.png"),
                 ),
                 SizedBox(height: 10),
                 Text(
@@ -132,7 +129,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Text('As minhas receitas',
                         style: TextStyle(
                           color:
-                          _displayFavorites ? Colors.black : Colors.white,
+                              _displayFavorites ? Colors.black : Colors.white,
                         )),
                   ),
                 ),
@@ -181,11 +178,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     borderSide: BorderSide(color: Color(0xFFBF7979)),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Color(0xFFBF7979)),
+                    borderSide: BorderSide(color: Color(0xFFBF7979)),
                   ),
                   contentPadding:
-                  EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
+                      EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
                 ),
               ),
             );
@@ -198,11 +194,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 itemBuilder: (context, index) {
                   return RecipeCard(
                       recipe: appState2.displayedRecipes[index],
-                      addToShoppingList: widget.addToShoppingList,
-                      isInPantry: widget.isInPantry,
-                      addToFavoriteList: widget.addToFavoriteList,
-                      isInFavorites: widget.isInFavorites,
-                      removeFromFavorite: widget.removeFromFavorite);
+                      shoppingList: widget.shoppingList,
+                      pantryList: widget.pantryList,
+                      favoriteList: widget.favoriteRecipeList,
+                      boughtStatus: widget.boughtStatus);
                 },
               ),
             );

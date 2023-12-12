@@ -16,17 +16,22 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   int _selectedIndex = 0;
-  List<String> pantryList = ["massa de lasanha",
+  List<String> pantryList = [
+    "massa de lasanha",
     "espinafres",
     "queijo ricotta",
     "queijo parmesão ralado",
     "mozzarella ralada",
     "alho picado",
     "azeite de oliva",
-    "molho de tomate","sal","pimenta preta", "noz-moscada"];
+    "molho de tomate",
+    "sal",
+    "pimenta preta",
+    "noz-moscada"
+  ];
   List<String> shoppingList = [];
   List<bool> boughtStatus = [];
-  List<Recipe> favoriteRecipeList = [startRecipeList[6]];
+  List<Recipe> favoriteList = [startRecipeList[6]];
   List<Recipe> recipeList = startRecipeList;
   List<Recipe> myRecipes = [];
 
@@ -36,43 +41,10 @@ class _AppState extends State<App> {
     });
   }
 
-  bool isInPantry(String ingredient) {
-    return pantryList.contains(ingredient);
-  }
-
-  bool isInFavorites(Recipe recipe) {
-    return favoriteRecipeList.contains(recipe);
-  }
-
   void backToHomeScreen() {
     setState(() {
       _selectedIndex = 0;
     });
-  }
-
-  void addToShoppingList(String ingredient) {
-    if (!shoppingList.contains(ingredient)) {
-      setState(() {
-        shoppingList.add(ingredient);
-        boughtStatus.add(false);
-      });
-    }
-  }
-
-  void addToFavoriteList(Recipe recipe) {
-    if (!favoriteRecipeList.contains(recipe)) {
-      setState(() {
-        favoriteRecipeList.add(recipe);
-      });
-    }
-  }
-
-  void removeFromFavorite(Recipe recipe) {
-    if (favoriteRecipeList.contains(recipe)) {
-      setState(() {
-        favoriteRecipeList.remove(recipe);
-      });
-    }
   }
 
   void addRecipe(Recipe recipe) {
@@ -82,14 +54,6 @@ class _AppState extends State<App> {
     });
   }
 
-  void addToPantry(String ingredient) {
-    if (!pantryList.contains(ingredient)) {
-      setState(() {
-        pantryList.add(ingredient);
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     Widget page;
@@ -97,21 +61,22 @@ class _AppState extends State<App> {
       case 0:
         page = HomeScreen(
             recipeList: recipeList,
-            addToShoppingList: addToShoppingList,
-            isInPantry: isInPantry,
-            addToFavoriteList: addToFavoriteList,
-            isInFavorites: isInFavorites,
-            removeFromFavorite: removeFromFavorite);
+            shoppingList: shoppingList,
+            pantryList: pantryList,
+            favoriteList: favoriteList,
+            boughtStatus: boughtStatus
+        );
         break;
       case 1:
         page = ShoppingListScreen(
             shoppingList: shoppingList,
-            boughtStatus: boughtStatus,
-            addToPantry: addToPantry);
+            pantryList: pantryList,
+            boughtStatus: boughtStatus);
         break;
       case 2:
         page = AddRecipeScreen(
-            addRecipe: addRecipe, backToHomeScreen: backToHomeScreen);
+            addRecipe: addRecipe,
+            backToHomeScreen: backToHomeScreen);
         break;
       case 3:
         page = PantryScreen(pantryList: pantryList);
@@ -119,12 +84,11 @@ class _AppState extends State<App> {
       case 4:
         page = ProfileScreen(
             recipeList: myRecipes,
-            favoriteRecipeList: favoriteRecipeList,
-            addToShoppingList: addToShoppingList,
-            isInPantry: isInPantry,
-            addToFavoriteList: addToFavoriteList,
-            isInFavorites: isInFavorites,
-            removeFromFavorite: removeFromFavorite);
+            favoriteRecipeList: favoriteList,
+            pantryList: pantryList,
+            shoppingList: shoppingList,
+            boughtStatus: boughtStatus
+        );
         break;
       default:
         throw UnimplementedError('no widget for $_selectedIndex');
