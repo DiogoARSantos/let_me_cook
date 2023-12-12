@@ -74,7 +74,7 @@ class SeeRecipeScreenState extends State<SeeRecipeScreen> {
                             Navigator.of(context).pop(true);
                           });
                       return AlertDialog(
-                        backgroundColor: Color(0xFFBF7979),
+                        backgroundColor: Color(0xFF6BB05A),
                         title: Text(
                           'Adicionada aos Favoritos',
                           textAlign: TextAlign.center,
@@ -171,15 +171,15 @@ class SeeRecipeScreenState extends State<SeeRecipeScreen> {
                         .contains(_recipe.ingredients[i].name.toLowerCase())
                         ? InkWell(
                       child: const Icon(Icons.check_circle,
-                          color: Colors.green),
+                          color: Color(0xFF6BB05A)),
                     )
                         : InkWell(
                       child: !widget.shoppingList.contains(
                           _recipe.ingredients[i].name.toLowerCase())
                           ? const Icon(Icons.shopping_cart,
-                          color: Colors.red, size: 35)
+                          color: Color(0xFFDC2A2A), size: 35)
                           : const Icon(Icons.shopping_cart,
-                          color: Colors.green, size: 35),
+                          color: Color(0xFF6BB05A), size: 35),
                       onTap: () {
                         String ingredient =
                         _recipe.ingredients[i].name.toLowerCase();
@@ -196,7 +196,7 @@ class SeeRecipeScreenState extends State<SeeRecipeScreen> {
                                   Navigator.of(context).pop(true);
                                 });
                                 return AlertDialog(
-                                  backgroundColor: Color(0xFFBF7979),
+                                  backgroundColor: Color(0xFF6BB05A),
                                   title: Text(
                                     'Adicionado à Lista de Compras',
                                     textAlign: TextAlign.center,

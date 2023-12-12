@@ -56,28 +56,28 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                 //PICTURE
                 _selectedImage == null
                     ? Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 200.0,
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 186, 186, 186),
-                    image: DecorationImage(
-                      scale: 5,
-                      image: AssetImage("assets/images/camera.png"),
-                    ),
-                  ),
-                )
+                        width: MediaQuery.of(context).size.width,
+                        height: 200.0,
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 186, 186, 186),
+                          image: DecorationImage(
+                            scale: 5,
+                            image: AssetImage("assets/images/camera.png"),
+                          ),
+                        ),
+                      )
                     : Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 200.0,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      alignment: Alignment.bottomCenter,
-                      image: FileImage(_selectedImage!),
-                    ),
-                  ),
-                ),
+                        width: MediaQuery.of(context).size.width,
+                        height: 200.0,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            alignment: Alignment.bottomCenter,
+                            image: FileImage(_selectedImage!),
+                          ),
+                        ),
+                      ),
                 MaterialButton(
                   color: Color(0xFFBF7979),
                   child: const Text("Escolher ficheiro",
@@ -190,7 +190,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                       Text("Ingredientes",
                           style: TextStyle(
                               fontSize: 22, fontWeight: FontWeight.bold)),
-                      SizedBox(width: 10),
+                      SizedBox(width: 5),
                       Tooltip(
                         richMessage: WidgetSpan(
                             alignment: PlaceholderAlignment.top,
@@ -267,7 +267,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                                         labelText: 'Unid',
                                         border: OutlineInputBorder(
                                           borderRadius:
-                                          BorderRadius.circular(20),
+                                              BorderRadius.circular(20),
                                         )),
                                     validator: (value) {
                                       if (value == "" || value == "0") {
@@ -289,7 +289,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                       icon: const Icon(Icons.add_box_outlined),
                       label: const Text('Adicionar Ingrediente'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
+                        backgroundColor: Color(0xFF6BB05A),
                       ),
                       onPressed: () {
                         _addIngredientField();
@@ -299,7 +299,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                       icon: const Icon(Icons.disabled_by_default_outlined),
                       label: const Text('Limpar Tudo'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
+                        backgroundColor: Color(0xFFDC2A2A),
                       ),
                       onPressed: () {
                         _removeAllIngredientFields();
@@ -315,10 +315,10 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                   height: 20,
                 ),
                 Align(
-                  alignment: Alignment(-0.9, 0),
+                  alignment: Alignment(-1, 0),
                   child: Text("Passos",
                       style:
-                      TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
                 ),
 
                 for (int i = 0; i < _stepsItems.length; i++)
@@ -343,7 +343,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                                 maxLines: 10,
                                 controller: _stepsItems[i],
                                 decoration: InputDecoration(
-                                    labelText: 'Passo',
+                                    labelText: 'Passo ${i + 1}',
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20),
                                     )),
@@ -365,7 +365,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                       icon: const Icon(Icons.add_box_outlined),
                       label: const Text('Adicionar Passo'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
+                        backgroundColor: Color(0xFF6BB05A),
                       ),
                       onPressed: () {
                         _addStepField();
@@ -375,7 +375,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                       icon: const Icon(Icons.disabled_by_default_outlined),
                       label: const Text('Limpar Tudo'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
+                        backgroundColor: Color(0xFFDC2A2A),
                       ),
                       onPressed: () {
                         _removeAllStepFields();
@@ -383,13 +383,13 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
                     )
                   ],
                 ),
-
+                SizedBox(height: 10),
                 //CREATE BUTTON
                 ElevatedButton(
                   onPressed: _createRecipe,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                    Colors.green, // Set your desired background color here
+                    backgroundColor: Color(
+                        0xFF6BB05A), // Set your desired background color here
                   ),
                   child: Text('Criar Receita'),
                 ),
@@ -425,8 +425,8 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
         TextFormField(
           decoration: InputDecoration(
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
-              )),
+            borderRadius: BorderRadius.circular(20),
+          )),
           validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Introduzir o título';
@@ -495,11 +495,9 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
         return AlertDialog(
           backgroundColor: Color(0xFFBF7979),
           title: Text('Limpar todos os ingredientes',
-              textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white)),
           content: Text(
               'Tem a certeza que deseja limpar todos os ingredientes?',
-              textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white)),
           actions: <Widget>[
             TextButton(
@@ -534,10 +532,8 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
         return AlertDialog(
           backgroundColor: Color(0xFFBF7979),
           title: Text('Limpar todos os passos',
-              textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white)),
           content: Text('Tem a certeza que deseja limpar todos os passos?',
-              textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white)),
           actions: <Widget>[
             TextButton(
@@ -664,7 +660,7 @@ class AddRecipeScreenState extends State<AddRecipeScreen> {
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.white),
           ),
-          backgroundColor: Color(0xFFBF7979),
+          backgroundColor: Color(0xFF6BB05A),
         );
       },
     );

@@ -92,8 +92,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                     ),
                     border: OutlineInputBorder(),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Color(0xFFBF7979)),
+                      borderSide: BorderSide(color: Color(0xFFBF7979)),
                     ),
                     contentPadding:
                     EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
@@ -124,7 +123,8 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                             boughtStatus[index] = value ?? false;
                           });
                           if (value == true) {
-                            if (!pantryList.contains(displayedShoppingList[index])) {
+                            if (!pantryList
+                                .contains(displayedShoppingList[index])) {
                               setState(() {
                                 pantryList.add(displayedShoppingList[index]);
                               });
@@ -186,13 +186,64 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
             ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xFFBF7979),
-        tooltip: "Adicionar novo ingrediente",
-        onPressed: () {
-          _navigateToIngredientSearch();
-        },
-        child: Icon(Icons.add),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          FloatingActionButton(
+            backgroundColor: Color(0xFF6BB05A),
+            tooltip: "Adicionar novo ingrediente",
+            onPressed: () {
+              _navigateToIngredientSearch();
+            },
+            child: Icon(Icons.add),
+          ),
+          SizedBox(height: 8),
+          FloatingActionButton(
+            backgroundColor: Colors.red, // Button color
+            tooltip: "Limpar Lista de Compras", // Tooltip
+            onPressed: () {
+              // Show the alert dialog
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    backgroundColor: Color(0xFFBF7979),
+                    title: Text("Limpar Lista de Compras",
+                        style: TextStyle(color: Colors.white)),
+                    content: Text(
+                        "Tem a certeza que deseja limpar a lista de compras?",
+                        style: TextStyle(color: Colors.white)),
+                    actions: <Widget>[
+                      TextButton(
+                        child: Text("Cancelar",
+                            style: TextStyle(color: Colors.white)),
+                        onPressed: () {
+                          Navigator.of(context).pop(); // Close the dialog
+                        },
+                      ),
+                      TextButton(
+                        child: Text("Limpar",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold)),
+                        onPressed: () {
+                          setState(() {
+                            shoppingList.clear(); // Clear the shopping list
+                            boughtStatus.clear(); // Clear the bought status
+                            displayedShoppingList =
+                            []; // Clear displayedShoppingList
+                          });
+                          Navigator.of(context).pop(); // Close the dialog
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            child: Icon(Icons.delete), // Icon within the button
+          ),
+        ],
       ),
     );
   }

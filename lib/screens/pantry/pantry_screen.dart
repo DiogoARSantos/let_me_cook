@@ -193,7 +193,7 @@ class _PantryScreenState extends State<PantryScreen> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      color: isOwned ? Colors.green : Colors.grey,
+                      color: isOwned ? Color(0xFF6BB05A) : Colors.grey,
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                     width: 100,
